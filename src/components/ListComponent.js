@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-import FooterComponent from './FooterComponent';
-import HeaderComponent from './HeaderComponent';
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
 import update from 'immutability-helper';
@@ -24,14 +22,12 @@ class ListComponent extends React.Component {
   render() {
     return (
       <div className="list-component">
-        <HeaderComponent />
         <div className="container">
           <div className="row">
             <ListItemsComponent {...this.state} handleDelete={this.handleDelete.bind(this)} />
             <ListFormComponent  handleSubmit={this.handleSubmit.bind(this)}/>
           </div>
         </div>
-        <FooterComponent />
       </div>
     );
   }

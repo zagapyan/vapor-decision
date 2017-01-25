@@ -6,7 +6,7 @@ import LoginComponent from './LoginComponent';
 import MainComponent from './MainComponent';
 import NoMatchComponent from './NoMatchComponent';
 import 'normalize.css/normalize.css';
-import '../styles/App.css';
+import '../styles/App.scss';
 
 class App extends Component {
   constructor(){

@@ -27,8 +27,7 @@ class ListFormComponent extends React.Component {
         <div className="col-xs-12">
           <form name="list-form" onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
-              <label htmlFor="list-form">Add Your Items to the List: </label>
-            	<input type="text" htmlFor="list-form" ref="listItem" className="form-control"/>
+            	<input type="text" htmlFor="list-form" ref="listItem" className="form-control" placeholder="Add Your Items to the List"/>
             	<button type="submit" htmlFor="list-form" className="btn btn-default">Add to List</button>
             </div>
           </form>
