@@ -14,8 +14,6 @@ class MainComponent extends React.Component {
       authed: false,
       loading: true
     };
-    // login('zigmundsunoo@gmail.com', 'reloader1');
-    // logout();
   }
   componentDidMount(){
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
@@ -33,25 +31,10 @@ class MainComponent extends React.Component {
     })
   }
   componentWillMount(){
-    this.getData();
+    // this.getData();
   }
   componentWillUnmount(){
     this.removeListener()
-  }
-  getData() {
-    base.fetch('/', {
-      context: this,
-      then: (data) => {
-        // this.setState({data})
-        console.log(data);
-      }
-    })
-  }
-  handleSubmit(e){
-    e.preventDefault();
-    const email = this.refs.email.value;
-    const password = this.refs.password.value;
-    this.setState({email, password})
   }
   render() {
     return (

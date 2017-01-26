@@ -3,15 +3,15 @@ import { ref, firebaseAuth } from '../config/constants';
 export const auth = (email, pw)=>{
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)
     .then(saveUser)
-    .catch((error) => console.log('Oops', error))
+    .catch((error) => console.log('Oops', error));
 }
 
 export const logout = ()=>{
-  return firebaseAuth().signOut()
+  return firebaseAuth().signOut();
 }
 
 export const login = (email, pw)=>{
-  return firebaseAuth().signInWithEmailAndPassword(email, pw)
+  return firebaseAuth().signInWithEmailAndPassword(email, pw);
 }
 
 export const saveUser = (user)=>{
@@ -20,5 +20,5 @@ export const saveUser = (user)=>{
       email: user.email,
       uid: user.uid
     })
-    .then(() => user)
+    .then(() => user);
 }

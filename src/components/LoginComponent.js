@@ -10,11 +10,19 @@ class LoginComponent extends React.Component{
     super(props);
     console.log(this);
   }
+  handleLoginSubmit(e){
+    e.preventDefault();
+    const email = this.refs.email.value;
+    const password = this.refs.password.value;
+  }
+  handleLogout(){
+    logout();
+  }
   render(){
     return (
       <div className="container">
         <h1> Login </h1>
-        <form onSubmit={this.props.handleLoginSubmit}>
+        <form onSubmit={this.handleLoginSubmit.bind(this)}>
           <div className="form-group">
             <label>Email</label>
             <input type="email" className="form-control" placeholder="Email" ref="email"/>
@@ -24,6 +32,7 @@ class LoginComponent extends React.Component{
             <input type="password" className="form-control" placeholder="Password" ref="password" />
           </div>
           <button type="submit" className="btn btn-primary">Login</button>
+          <button onClick={this.handleLogout} className="btn btn-danger">Log Out</button>
         </form>
       </div>
     )

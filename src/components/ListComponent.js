@@ -3,28 +3,41 @@
 import React from 'react';
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
-
+import {base} from '../config/constants';
 require('styles//List.css');
 
 class ListComponent extends React.Component {
   constructor(props){
     super(props);
     this.state=this.props;
+    console.log(this);
+}
+  getData() {
+    base.fetch('/', {
+      context: this,
+      then: (data) => {
+        this.setState({listItems: data})
+      }
+    })
   }
-  handleSubmit(item){
+  handleSubmitItem(item){
     // console.log(item);
     this.setState({listItems: this.state.listItems.concat(item)});
   }
-  handleDelete(id){
+  handleDeleteItem(id){
     // console.log(id);
+  }
+  componentWillMount(){
+    console.log('componentWillMount');
+    this.getData();
   }
   render() {
     return (
       <div className="list-component">
         <div className="container">
           <div className="row">
-            <ListItemsComponent {...this.state} handleDelete={this.handleDelete.bind(this)} />
-            <ListFormComponent  handleSubmit={this.handleSubmit.bind(this)}/>
+            <ListItemsComponent {...this.state} handleDeleteItem={this.handleDeleteItem.bind(this)} />
+            <ListFormComponent  handleSubmitItem={this.handleSubmitItem.bind(this)}/>
           </div>
         </div>
       </div>
