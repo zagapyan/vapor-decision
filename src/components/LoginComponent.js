@@ -12,33 +12,25 @@ class LoginComponent extends React.Component{
       password: ''
     }
   }
-  loginSubmit(event){
-    event.preventDefault();
-    this.state.email= this.refs.email.value
-    this.state.password= this.refs.password.value;
-    
-    // clear after submitting;
-    this.refs.email.value = '';
-    this.refs.password.value = '';
+  handleSubmit(e){
+    e.preventDefault()
+    login(this.email.value, this.pw.value)
   }
   render(){
     return (
-      <div className="login-component">
-        <div className="container">
-          <form className="form-control" name="submitLogin" onSubmit={this.loginSubmit.bind(this)}>
-            <h1>{this.props.title}</h1>
-            <p>{this.props.stuff}</p>
-            <label name="email">Email: </label>
-            <input htmlFor="submitLogin" type="email" ref="email"/>
-            <label name="password">Password: </label>
-            <input htmlFor="submitLogin" type="password" ref="password"/>
-            <button
-              type="submit"
-              htmlFor="submitLogin"
-              className="btn btn-lg btn-default">Login
-            </button>
-          </form>
-        </div>
+      <div className="col-sm-6 col-sm-offset-3">
+        <h1> Login </h1>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div className="form-group">
+            <label>Email</label>
+            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+          </div>
+          <button type="submit" className="btn btn-primary">Login</button>
+        </form>
       </div>
     )
   }
