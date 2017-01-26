@@ -8,7 +8,7 @@ import '../styles/Index.css';
 class IndexComponent extends React.Component {
   render() {
     return (
-      <div className="index-component">      
+      <div className="index-component">
         <ContentComponent props={this.props.children} />
       </div>
     );

@@ -3,7 +3,6 @@
 import React from 'react';
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
-import update from 'immutability-helper';
 
 require('styles//List.css');
 
@@ -13,11 +12,11 @@ class ListComponent extends React.Component {
     this.state=this.props;
   }
   handleSubmit(item){
-    console.log(item);
+    // console.log(item);
     this.setState({listItems: this.state.listItems.concat(item)});
   }
   handleDelete(id){
-    console.log(id);
+    // console.log(id);
   }
   render() {
     return (

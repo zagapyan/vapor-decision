@@ -14,7 +14,7 @@ class LoginComponent extends React.Component{
   }
   handleSubmit(e){
     e.preventDefault()
-    login(this.email.value, this.pw.value)
+    // login(this.email.value, this.pw.value)
   }
   render(){
     return (
