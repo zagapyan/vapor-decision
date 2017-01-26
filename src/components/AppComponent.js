@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { IndexRoute, Router, Route, Link, browserHistory } from 'react-router'
 import IndexComponent from './IndexComponent';
 import MainComponent from './MainComponent';
+import ListComponent from './ListComponent';
+import LoginComponent from './LoginComponent';
+import NoMatchComponent from './NoMatchComponent';
+
 import 'normalize.css/normalize.css';
 import '../styles/App.scss';
 
@@ -16,10 +20,10 @@ class App extends Component {
         <Router history={browserHistory}>
           <Route path="/" component={MainComponent}>
             <IndexRoute component={IndexComponent} />
-            {/*<Route path="list" component={ListComponent} />*/}
-            {/*<Route path="login" component={LoginComponent} />*/}
+            <Route path="list" component={ListComponent} />
+            <Route path="login" component={LoginComponent} />
           </Route>
-          {/*<Route path="*" component={NoMatchComponent} />*/}
+          <Route path="*" component={NoMatchComponent} />
         </Router>
       </div>
     );

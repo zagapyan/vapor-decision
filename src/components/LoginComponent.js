@@ -2,32 +2,26 @@
 
 import React from 'react';
 
+import {auth, logout, login, saveUser} from '../helpers/auth';
 import '../styles/Login.css';
 
 class LoginComponent extends React.Component{
   constructor(props){
     super(props);
-    this.state = {
-      email: '',
-      password: ''
-    }
-  }
-  handleSubmit(e){
-    e.preventDefault()
-    // login(this.email.value, this.pw.value)
+    console.log(this);
   }
   render(){
     return (
-      <div className="col-sm-6 col-sm-offset-3">
+      <div className="container">
         <h1> Login </h1>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.props.handleLoginSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+            <input type="email" className="form-control" placeholder="Email" ref="email"/>
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            <input type="password" className="form-control" placeholder="Password" ref="password" />
           </div>
           <button type="submit" className="btn btn-primary">Login</button>
         </form>
