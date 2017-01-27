@@ -14,7 +14,6 @@ class App extends Component {
     super();
   }
   render() {
-    console.log(this);
     return (
       <div className="app-component">
         <Router history={browserHistory}>

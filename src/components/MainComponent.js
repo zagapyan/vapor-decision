@@ -11,8 +11,7 @@ class MainComponent extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      authed: false,
-      loading: true
+      authed: false
     };
   }
   componentDidMount(){

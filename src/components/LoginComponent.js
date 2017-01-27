@@ -8,12 +8,28 @@ import '../styles/Login.css';
 class LoginComponent extends React.Component{
   constructor(props){
     super(props);
-    console.log(this);
+    this.state = {
+      message: 'Please enter your email and password'
+    }
   }
   handleLoginSubmit(e){
     e.preventDefault();
     const email = this.refs.email.value;
     const password = this.refs.password.value;
+    login(email, password).then((data)=>{
+      if(data.isAnonymous===false){
+        this.setState({
+          message: 'You have been authenticated!'
+        })
+      }
+    }).catch((err)=>{
+      console.log(err);
+      this.setState({
+        message: err.message
+      }, ()=>{
+
+      })
+    })
   }
   handleLogout(){
     logout();
@@ -23,6 +39,7 @@ class LoginComponent extends React.Component{
       <div className="container">
         <h1> Login </h1>
         <form onSubmit={this.handleLoginSubmit.bind(this)}>
+          <p>{this.state.message}</p>
           <div className="form-group">
             <label>Email</label>
             <input type="email" className="form-control" placeholder="Email" ref="email"/>
@@ -40,8 +57,6 @@ class LoginComponent extends React.Component{
 }
 
 LoginComponent.defaultProps = {
-  title: 'This is the login compoent',
-  stuff: 'All Login Related Stuff Goes Here'
 }
 
 LoginComponent.displayName = 'LoginComponent';
