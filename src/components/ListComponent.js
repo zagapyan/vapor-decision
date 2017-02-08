@@ -13,7 +13,7 @@ class ListComponent extends React.Component {
     console.log(this);
 }
   getData() {
-    base.fetch('/', {
+    base.fetch('/listItems', {
       context: this,
       then: (data) => {
         this.setState({listItems: data})
@@ -22,7 +22,11 @@ class ListComponent extends React.Component {
   }
   handleSubmitItem(item){
     // console.log(item);
-    this.setState({listItems: this.state.listItems.concat(item)});
+    this.setState({listItems: this.state.listItems.concat(item)},
+      ()=>{
+        console.log(this.state);
+      }
+    );
   }
   handleDeleteItem(id){
     // console.log(id);
@@ -30,6 +34,13 @@ class ListComponent extends React.Component {
   componentWillMount(){
     console.log('componentWillMount');
     this.getData();
+  }
+  componentDidMount(){
+    base.syncState('listItems', {
+      context: this,
+      state: 'listItems',
+      asArray: true
+    });
   }
   render() {
     return (

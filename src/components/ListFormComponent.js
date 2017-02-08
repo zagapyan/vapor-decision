@@ -11,13 +11,15 @@ class ListFormComponent extends React.Component {
   onSubmit(e){
     this.listItem = this.refs.listItem.value;
     e.preventDefault();
-    console.log(this);
+    // console.log(this);
     if(this.listItem.length > 0){
+      console.log(this.listItem);
       this.setState({
         listItem: { value: this.listItem }
       },()=>{
         // clear out input field
-        this.props.handleSubmit(this.state.listItem);
+        this.refs.listItem.value = '';
+        this.props.handleSubmitItem(this.state.listItem);
       });
     }
   }
