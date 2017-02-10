@@ -1,17 +1,47 @@
 import React, { Component } from 'react';
-import { IndexRoute, Router, Route, Link, browserHistory } from 'react-router'
+import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 import IndexComponent from './IndexComponent';
 import MainComponent from './MainComponent';
 import ListComponent from './ListComponent';
 import LoginComponent from './LoginComponent';
 import NoMatchComponent from './NoMatchComponent';
 
+import { base, ref, firebaseAuth} from '../config/constants';
+import {auth, logout, login, saveUser} from '../helpers/auth';
+
 import 'normalize.css/normalize.css';
 import '../styles/App.scss';
 
 class App extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    this.state = {
+      authed: false
+    };
+  }
+  componentDidMount(){
+    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+      
+      if (user) {
+        // console.log(user);
+        console.log('user is logged in');
+        this.setState({
+          authed: true,
+          loading: false
+        })
+      } else {
+        console.log('user is not logged in');
+        this.setState({
+          loading: false
+        })
+      }
+    })
+  }
+  componentWillMount(){
+    // this.getData();
+  }
+  componentWillUnmount(){
+    this.removeListener()
   }
   render() {
     return (

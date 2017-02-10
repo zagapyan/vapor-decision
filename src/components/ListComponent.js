@@ -1,9 +1,12 @@
 'use strict';
 
 import React from 'react';
+import update from 'react-addons-update';
+
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
 import {base} from '../config/constants';
+
 require('styles//List.css');
 
 class ListComponent extends React.Component {
@@ -28,11 +31,13 @@ class ListComponent extends React.Component {
       }
     );
   }
-  handleDeleteItem(id){
-    // console.log(id);
+  handleDeleteItem(key){
+    this.setState({
+      listItems: update(this.state.listItems, {$splice: [[key, 1]]})
+    })
   }
   componentWillMount(){
-    console.log('componentWillMount');
+    // console.log('componentWillMount');
     this.getData();
   }
   componentDidMount(){
@@ -61,11 +66,7 @@ ListComponent.displayName = 'ListComponent';
 // Uncomment properties you need
 // ListComponent.propTypes = {};
 ListComponent.defaultProps = {
-  listItems: [
-    {
-      value: 'Add Your Items Here...'
-    }
-  ]
+  listItems: [{}]
 };
 
 export default ListComponent;
