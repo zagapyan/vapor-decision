@@ -3,7 +3,7 @@
 import React from 'react';
 import ContentComponent from './ContentComponent';
 
-import '../styles/Index.css';
+import '../styles/Index.scss';
 
 class IndexComponent extends React.Component {
   render() {

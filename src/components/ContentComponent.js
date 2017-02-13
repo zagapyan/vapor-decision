@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import '../styles//Content.css';
+import '../styles//Content.scss';
 
 class ContentComponent extends React.Component {
   render() {

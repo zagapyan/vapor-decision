@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-require('styles//ListItems.css');
+require('styles//ListItems.scss');
 
 class ListItemsComponent extends React.Component {
   constructor(props){

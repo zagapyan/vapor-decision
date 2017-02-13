@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-require('styles//ListForm.css');
+require('styles//ListForm.scss');
 
 class ListFormComponent extends React.Component {
   constructor(props){

@@ -20,19 +20,17 @@ class App extends Component {
     };
   }
   componentDidMount(){
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      
+    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {      
       if (user) {
         // console.log(user);
         console.log('user is logged in');
         this.setState({
-          authed: true,
-          loading: false
+          authed: true
         })
       } else {
         console.log('user is not logged in');
         this.setState({
-          loading: false
+          authed: false
         })
       }
     })
@@ -46,7 +44,7 @@ class App extends Component {
   render() {
     return (
       <div className="app-component">
-        <Router history={browserHistory}>
+        <Router history={browserHistory} >
           <Route path="/" component={MainComponent}>
             <IndexRoute component={IndexComponent} />
             <Route path="list" component={ListComponent} />

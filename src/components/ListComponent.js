@@ -7,7 +7,7 @@ import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
 import {base} from '../config/constants';
 
-require('styles//List.css');
+require('styles//List.scss');
 
 class ListComponent extends React.Component {
   constructor(props){

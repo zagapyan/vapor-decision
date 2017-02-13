@@ -3,7 +3,7 @@
 import React from 'react';
 
 import {auth, logout, login, saveUser} from '../helpers/auth';
-import '../styles/Login.css';
+import '../styles/Login.scss';
 
 class LoginComponent extends React.Component{
   constructor(props){
@@ -11,6 +11,9 @@ class LoginComponent extends React.Component{
     this.state = {
       message: 'Please enter your email and password'
     }
+  }
+  componentWillMount(){
+    console.log(this);
   }
   handleLoginSubmit(e){
     e.preventDefault();
@@ -20,6 +23,10 @@ class LoginComponent extends React.Component{
       if(data.isAnonymous===false){
         this.setState({
           message: 'You have been authenticated!'
+        }, ()=>{
+          setTimeOut(()=>{
+            return;
+          }, 1000)
         })
       }
     }).catch((err)=>{
@@ -36,21 +43,27 @@ class LoginComponent extends React.Component{
   }
   render(){
     return (
-      <div className="container">
-        <h1> Login </h1>
-        <form onSubmit={this.handleLoginSubmit.bind(this)}>
-          <p>{this.state.message}</p>
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" className="form-control" placeholder="Email" ref="email"/>
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref="password" />
-          </div>
-          <button type="submit" className="btn btn-primary">Login</button>
-          <button onClick={this.handleLogout} className="btn btn-danger">Log Out</button>
-        </form>
+      <div className="login-component">
+        <div className="container">
+          <h1> Login </h1>
+          <form onSubmit={this.handleLoginSubmit.bind(this)}>
+            <p>{this.state.message}</p>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" className="form-control" placeholder="Email" ref="email"/>
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input type="password" className="form-control" placeholder="Password" ref="password" />
+            </div>
+            <div className="col-xs-12 button-row">
+              <div className="row">
+                <button type="submit" className="btn btn-primary login">Log In</button>
+                <button onClick={this.handleLogout} className="btn btn-danger logout">Log Out</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     )
   }
