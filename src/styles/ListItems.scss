@@ -1,0 +1,27 @@
+.listitems-component{
+	.list-unstyled{
+		.form-control{
+			margin-bottom: 1rem;
+
+			button{
+				border-radius: .2rem;
+				border: none;
+				width: 2.5rem;
+				height: 2.5rem;
+				line-height: 0.5;
+				padding: 0;
+				position: relative;
+				top: -0.2rem;
+				right: -0.8rem;
+				color: #fff;
+		    background-color: #d9534f;
+		    border-color: #d43f3a;
+			}
+			button:hover{
+				color: #fff;
+				background-color: #c9302c;
+				border-color: #ac2925;
+			}
+		}
+	}
+}
