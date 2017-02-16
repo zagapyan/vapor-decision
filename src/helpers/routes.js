@@ -9,13 +9,13 @@
 */
 }
 
-import {auth, logout, login, saveUser} from './auth';
+// import {auth, logout, login, saveUser} from './auth';
 
-import IndexComponent from '../components/IndexComponent';
-import MainComponent from '../components/MainComponent';
-import ListComponent from '../components/ListComponent';
-import LoginComponent from '../components/LoginComponent';
-import NoMatchComponent from '../components/NoMatchComponent';
+// import IndexComponent from '../components/IndexComponent';
+// import MainComponent from '../components/MainComponent';
+// import ListComponent from '../components/ListComponent';
+// import LoginComponent from '../components/LoginComponent';
+// import NoMatchComponent from '../components/NoMatchComponent';
 
 function redirectToHome(nextState, replace) {
 	replace('/');
