@@ -1,42 +1,70 @@
 'use strict';
 
 import React from 'react';
-
-import '../styles/Login.css';
+import { hashHistory } from 'react-router';
+import {auth, logout, login, saveUser} from '../helpers/auth';
+import '../styles/Login.scss';
 
 class LoginComponent extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      email: '',
-      password: ''
+      message: 'Please enter your email and password'
     }
   }
-  loginSubmit(event){
-    event.preventDefault();
-    this.state.email= this.refs.email.value
-    this.state.password= this.refs.password.value;
-    
-    // clear after submitting;
-    this.refs.email.value = '';
-    this.refs.password.value = '';
+  componentWillMount(){
+    if(this.props.authed==true){
+      hashHistory.push('/list');
+    }
+  }
+  handleLoginSubmit(e){
+    e.preventDefault();
+    const email = this.refs.email.value;
+    const password = this.refs.password.value;
+    login(email, password).then((data)=>{
+      if(data.isAnonymous===false){
+        this.setState({
+          message: 'You have been authenticated!'
+        }, ()=>{
+          // redirects to list page
+          setTimeout(()=>{
+            hashHistory.push('/list');
+          }, 1000)
+        })
+      }
+    }).catch((err)=>{
+      console.log(err);
+      this.setState({
+        message: err.message
+      }, ()=>{
+        return 0;
+      })
+    })
+  }
+  handleLogout(){
+    logout();
   }
   render(){
     return (
       <div className="login-component">
         <div className="container">
-          <form className="form-control" name="submitLogin" onSubmit={this.loginSubmit.bind(this)}>
-            <h1>{this.props.title}</h1>
-            <p>{this.props.stuff}</p>
-            <label name="email">Email: </label>
-            <input htmlFor="submitLogin" type="email" ref="email"/>
-            <label name="password">Password: </label>
-            <input htmlFor="submitLogin" type="password" ref="password"/>
-            <button
-              type="submit"
-              htmlFor="submitLogin"
-              className="btn btn-lg btn-default">Login
-            </button>
+          <h1> Login </h1>
+          <form onSubmit={this.handleLoginSubmit.bind(this)}>
+            <p>{this.state.message}</p>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" className="form-control" placeholder="Email" ref="email"/>
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input type="password" className="form-control" placeholder="Password" ref="password" />
+            </div>
+            <div className="col-xs-12 button-row">
+              <div className="row">
+                <button type="submit" className="btn btn-primary login">Log In</button>
+                <button onClick={this.handleLogout} className="btn btn-danger logout">Log Out</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -45,8 +73,6 @@ class LoginComponent extends React.Component{
 }
 
 LoginComponent.defaultProps = {
-  title: 'This is the login compoent',
-  stuff: 'All Login Related Stuff Goes Here'
 }
 
 LoginComponent.displayName = 'LoginComponent';

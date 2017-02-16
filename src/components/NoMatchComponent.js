@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import '../styles//NoMatch.css';
+import '../styles//NoMatch.scss';
 
 class NoMatchComponent extends React.Component {
   render() {

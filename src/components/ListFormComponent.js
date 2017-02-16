@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-require('styles//ListForm.css');
+require('styles//ListForm.scss');
 
 class ListFormComponent extends React.Component {
   constructor(props){
@@ -11,13 +11,15 @@ class ListFormComponent extends React.Component {
   onSubmit(e){
     this.listItem = this.refs.listItem.value;
     e.preventDefault();
-    console.log(this);
+    // console.log(this);
     if(this.listItem.length > 0){
+      console.log(this.listItem);
       this.setState({
         listItem: { value: this.listItem }
       },()=>{
         // clear out input field
-        this.props.handleSubmit(this.state.listItem);
+        this.refs.listItem.value = '';
+        this.props.handleSubmitItem(this.state.listItem);
       });
     }
   }
@@ -25,7 +27,7 @@ class ListFormComponent extends React.Component {
     return (
       <div className="listform-component">
         <div className="col-xs-12">
-          <form name="list-form" onSubmit={this.onSubmit.bind(this)}>
+          <form className="list-form" name="list-form" onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
             	<input type="text" htmlFor="list-form" ref="listItem" className="form-control" placeholder="Add Your Items to the List"/>
             	<button type="submit" htmlFor="list-form" className="btn btn-default">Add to List</button>

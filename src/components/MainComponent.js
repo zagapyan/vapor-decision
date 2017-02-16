@@ -1,49 +1,56 @@
 'use strict';
 
 import React from 'react';
-import '../styles/Main.css';
-import Rebase from 're-base';
-
+import '../styles/Main.scss';
 import FooterComponent from './FooterComponent';
 import HeaderComponent from './HeaderComponent';
 
-const base = Rebase.createClass({
-  // Initialize Firebase
-  apiKey: "AIzaSyAhDcrtv3kIOqlZhHQDZUf62bItWqEMnwI",
-  authDomain: "fir-test-447a2.firebaseapp.com",
-  databaseURL: "https://fir-test-447a2.firebaseio.com",
-  storageBucket: "fir-test-447a2.appspot.com",
-  messagingSenderId: "934022056810"
-});
+import { base, ref, firebaseAuth} from '../config/constants';
+import { auth, logout, login, saveUser } from '../helpers/auth';
 
-const ref = base.database().ref();
-const firebaseAuth = base.auth;
 
 class MainComponent extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  componentWillMount(){
-    this.getData();
-  }
-  getData() {
-    base.fetch(`/`, {
-      context: this,
-      then: (data) => {
-        // this.setState({data})
-        console.log(data);
-      }
-    })
-  }
-  render() {
-    return (
-      <div className="main-component">
-        <HeaderComponent />
-        {this.props.children}
-        <FooterComponent />
-      </div>
-    );
-  }
+	constructor(props){
+		super(props);
+		this.state = {
+			authed: false
+		};
+	}
+	componentDidMount(){
+		this.removeListener = firebaseAuth().onAuthStateChanged((user) => {      
+			if (user) {
+				console.log('user is logged in');
+				this.setState({
+					authed: true
+				})
+			} else {
+				console.log('user is not logged in');
+				this.setState({
+					authed: false
+				})
+			}
+		})
+	}
+	componentWillMount(){
+		// this.getData();
+	}
+	componentWillUnmount(){
+		this.removeListener()
+	}
+	render() {
+		const childrenWithProps = React.Children.map(this.props.children,
+		 (child) => React.cloneElement(child, {
+			 authed: this.state.authed
+		 })
+		);
+		return (
+			<div className="main-component">
+				<HeaderComponent />
+				{childrenWithProps}
+				<FooterComponent />
+			</div>
+		);
+	}
 }
 
 MainComponent.displayName = 'MainComponent';

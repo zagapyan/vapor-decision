@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
-import { IndexRoute, Router, Route, Link, browserHistory } from 'react-router'
-import IndexComponent from './IndexComponent';
-import ListComponent from './ListComponent';
-import LoginComponent from './LoginComponent';
-import MainComponent from './MainComponent';
-import NoMatchComponent from './NoMatchComponent';
+import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 import 'normalize.css/normalize.css';
 import '../styles/App.scss';
 
+import IndexComponent from './IndexComponent';
+import MainComponent from './MainComponent';
+import ListComponent from './ListComponent';
+import LoginComponent from './LoginComponent';
+import NoMatchComponent from './NoMatchComponent';
+
 class App extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    this.state = {
+      authed: false
+    };
+  }
+  componentDidMount(){
+  }
+  componentWillMount(){
+  }
+  componentWillUnmount(){
   }
   render() {
-    console.log(this);
     return (
       <div className="app-component">
-        <Router history={browserHistory}>
+        {/*<Router history={hashHistory} routes={routes} {...this.state}/>*/}
+        <Router history={hashHistory}>
           <Route path="/" component={MainComponent}>
-            <IndexRoute component={IndexComponent} />
+            <IndexRoute component={IndexComponent}/>
             <Route path="list" component={ListComponent} />
             <Route path="login" component={LoginComponent} />
           </Route>
-          <Route path="*" component={NoMatchComponent} />
+          <Route path="*" component={NoMatchComponent}/> 
         </Router>
       </div>
     );

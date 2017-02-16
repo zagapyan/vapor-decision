@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import '../styles//Footer.css';
+import '../styles//Footer.scss';
 
 class FooterComponent extends React.Component {
   render() {
