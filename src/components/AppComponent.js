@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
-
-// import { base, ref, firebaseAuth} from '../config/constants';
-// import {auth, logout, login, saveUser} from '../helpers/auth';
-// import routes from '../helpers/routes'
 import 'normalize.css/normalize.css';
 import '../styles/App.scss';
-
-// import {auth, logout, login, saveUser} from '../helpers/auth';
 
 import IndexComponent from './IndexComponent';
 import MainComponent from './MainComponent';

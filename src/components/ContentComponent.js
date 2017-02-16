@@ -2,12 +2,16 @@
 
 import React from 'react';
 import '../styles//Content.scss';
-
+import { Link } from 'react-router';
 class ContentComponent extends React.Component {
   render() {
     return (
       <div className="content-component">
-        <p>This is the Content Component</p>
+        <div className="container">
+        	<h1 className="text-center">Welcome to Vapor Decision!</h1>
+        	<p className="text-center">Insert fancy image here for ad</p>
+        	<Link to="login" className="btn btn-default">Login</Link>
+      	</div>
       </div>
     );
   }

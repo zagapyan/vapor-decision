@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-
+import { hashHistory } from 'react-router';
 import {auth, logout, login, saveUser} from '../helpers/auth';
 import '../styles/Login.scss';
 
@@ -13,7 +13,9 @@ class LoginComponent extends React.Component{
     }
   }
   componentWillMount(){
-    console.log(this);
+    if(this.props.authed==true){
+      hashHistory.push('/list');
+    }
   }
   handleLoginSubmit(e){
     e.preventDefault();
@@ -24,8 +26,9 @@ class LoginComponent extends React.Component{
         this.setState({
           message: 'You have been authenticated!'
         }, ()=>{
-          setTimeOut(()=>{
-            return;
+          // redirects to list page
+          setTimeout(()=>{
+            hashHistory.push('/list');
           }, 1000)
         })
       }
@@ -34,7 +37,7 @@ class LoginComponent extends React.Component{
       this.setState({
         message: err.message
       }, ()=>{
-
+        return 0;
       })
     })
   }
