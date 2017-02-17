@@ -1,13 +1,13 @@
 'use strict';
 
 import React from 'react';
-import '../styles/Main.scss';
 import FooterComponent from './FooterComponent';
 import HeaderComponent from './HeaderComponent';
 
 import { base, ref, firebaseAuth} from '../config/constants';
 import { auth, logout, login, saveUser } from '../helpers/auth';
 
+import '../styles/Main.scss';
 
 class MainComponent extends React.Component {
 	constructor(props){
@@ -32,7 +32,7 @@ class MainComponent extends React.Component {
 		})
 	}
 	componentWillMount(){
-		// this.getData();
+	
 	}
 	componentWillUnmount(){
 		this.removeListener()
@@ -45,7 +45,7 @@ class MainComponent extends React.Component {
 		);
 		return (
 			<div className="main-component">
-				<HeaderComponent />
+				<HeaderComponent authed={this.state.authed}/>
 				{childrenWithProps}
 				<FooterComponent />
 			</div>

@@ -6,8 +6,9 @@ export const auth = (email, pw)=>{
     .catch((error) => console.log('Oops', error));
 }
 
-export const logout = ()=>{
-  return firebaseAuth().signOut();
+export const logout = (callback)=>{
+  firebaseAuth().signOut();
+  if(callback) callback();
 }
 
 export const login = (email, pw)=>{

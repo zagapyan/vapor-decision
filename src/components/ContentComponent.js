@@ -10,7 +10,7 @@ class ContentComponent extends React.Component {
         <div className="container">
         	<h1 className="text-center">Welcome to Vapor Decision!</h1>
         	<p className="text-center">Insert fancy image here for ad</p>
-        	<Link to="login" className="btn btn-default">Login</Link>
+        	<Link to="login" className="btn btn-default login-button">Login</Link>
       	</div>
       </div>
     );

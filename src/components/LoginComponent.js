@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { hashHistory } from 'react-router';
-import {auth, logout, login, saveUser} from '../helpers/auth';
+import {auth, login, saveUser} from '../helpers/auth';
+import {hashHistory} from 'react-router';
 import '../styles/Login.scss';
 
 class LoginComponent extends React.Component{
@@ -17,6 +17,9 @@ class LoginComponent extends React.Component{
       hashHistory.push('/list');
     }
   }
+  componentWillUnmount(){
+    this.removeListener();
+  }
   handleLoginSubmit(e){
     e.preventDefault();
     const email = this.refs.email.value;
@@ -26,10 +29,7 @@ class LoginComponent extends React.Component{
         this.setState({
           message: 'You have been authenticated!'
         }, ()=>{
-          // redirects to list page
-          setTimeout(()=>{
-            hashHistory.push('/list');
-          }, 1000)
+          hashHistory.push('/list');
         })
       }
     }).catch((err)=>{
@@ -40,9 +40,6 @@ class LoginComponent extends React.Component{
         return 0;
       })
     })
-  }
-  handleLogout(){
-    logout();
   }
   render(){
     return (
@@ -62,7 +59,6 @@ class LoginComponent extends React.Component{
             <div className="col-xs-12 button-row">
               <div className="row">
                 <button type="submit" className="btn btn-primary login">Log In</button>
-                <button onClick={this.handleLogout} className="btn btn-danger logout">Log Out</button>
               </div>
             </div>
           </form>
