@@ -20,10 +20,8 @@ class LoginComponent extends React.Component{
   componentWillUnmount(){
     this.removeListener();
   }
-  handleLoginSubmit(e){
-    e.preventDefault();
-    const email = this.refs.email.value;
-    const password = this.refs.password.value;
+  handleLoginSubmit( email, password){
+    event.preventDefault();
     login(email, password).then((data)=>{
       if(data.isAnonymous===false){
         this.setState({
@@ -41,12 +39,18 @@ class LoginComponent extends React.Component{
       })
     })
   }
+  onSubmit(event){
+    event.preventDefault();
+    const email = this.refs.email.value;
+    const password = this.refs.password.value;
+    this.handleLoginSubmit(email, password);
+  }
   render(){
     return (
       <div className="login-component">
         <div className="container">
           <h1> Login </h1>
-          <form onSubmit={this.handleLoginSubmit.bind(this)}>
+          <form onSubmit={this.onSubmit.bind(this)}>
             <p>{this.state.message}</p>
             <div className="form-group">
               <label>Email</label>

@@ -2,22 +2,23 @@
 
 import React from 'react';
 import { hashHistory } from 'react-router';
-import { logout } from '../helpers/auth'
+// import { logout } from '../helpers/auth'
 import '../styles//Header.scss';
 
 class HeaderComponent extends React.Component {
   constructor(props){
   	super(props);
   }
-  handleLogout(){
-  	logout();
+  onLogout(e){
+    e.preventDefault();
+    this.props.handleLogout();
   }
   componentWillMount(){
   }
   componentDidMount(){
   }
   render() {
-  	const loginTrigger = this.props.authed ? <button onClick={this.handleLogout.bind(this)} className="btn btn-danger logout-button">Log Out</button> : '';
+  	const loginTrigger = this.props.authed ? <button onClick={this.onLogout.bind(this)} className="btn btn-danger logout-button">Log Out</button> : '';
     return (
       <div className="header-component">
         <div className="container">
