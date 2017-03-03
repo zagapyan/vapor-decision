@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-
 require('styles//ListForm.scss');
 
 class ListFormComponent extends React.Component {
@@ -23,6 +22,9 @@ class ListFormComponent extends React.Component {
       });
     }
   }
+  onSpin(){
+    this.props.handleSpin();
+  }
   render() {
     return (
       <div className="listform-component">
@@ -31,6 +33,7 @@ class ListFormComponent extends React.Component {
             <div className="form-group">
             	<input type="text" htmlFor="list-form" ref="listItem" className="form-control" placeholder="Add Your Items to the List"/>
             	<button type="submit" htmlFor="list-form" className="btn btn-default">Add to List</button>
+              <button onClick={this.onSpin.bind(this)} className="btn btn-default pull-right go-button">Spin!</button>
             </div>
           </form>
         </div>

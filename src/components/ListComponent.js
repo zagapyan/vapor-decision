@@ -5,6 +5,8 @@ import update from 'react-addons-update';
 
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
+import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
+
 import {base} from '../config/constants';
 
 require('styles//List.scss');
@@ -36,6 +38,13 @@ class ListComponent extends React.Component {
       listItems: update(this.state.listItems, {$splice: [[key, 1]]})
     })
   }
+  handleSpin(){
+    this.getRandomValue();
+  }
+  getRandomValue(){
+    let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
+    this.setState({randomValue}) 
+  }
   componentWillMount(){
     // console.log('componentWillMount');
     this.getData();
@@ -52,8 +61,9 @@ class ListComponent extends React.Component {
       <div className="list-component">
         <div className="container">
           <div className="row">
-            <ListItemsComponent {...this.state} handleDeleteItem={this.handleDeleteItem.bind(this)} />
-            <ListFormComponent  handleSubmitItem={this.handleSubmitItem.bind(this)}/>
+            <RandomItemSpinnerComponent randomValue={this.state.randomValue}/>
+            <ListItemsComponent {...this.state} handleDeleteItem={this.handleDeleteItem.bind(this)}/>
+            <ListFormComponent  handleSubmitItem={this.handleSubmitItem.bind(this)} handleSpin={this.handleSpin.bind(this)}/>
           </div>
         </div>
       </div>
@@ -66,6 +76,7 @@ ListComponent.displayName = 'ListComponent';
 // Uncomment properties you need
 // ListComponent.propTypes = {};
 ListComponent.defaultProps = {
+  randomValue: 'Start Spinning!', 
   listItems: [{}]
 };
 
