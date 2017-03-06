@@ -8,15 +8,16 @@ import ListFormComponent from './ListFormComponent';
 import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
 
 import {base} from '../config/constants';
-
 require('styles//List.scss');
+let LoadingGif = require('../images/loading.gif');
+console.log(LoadingGif);
 
 class ListComponent extends React.Component {
   constructor(props){
     super(props);
     this.state=this.props;
     console.log(this);
-}
+  }
   getData() {
     base.fetch('/listItems', {
       context: this,
@@ -26,7 +27,6 @@ class ListComponent extends React.Component {
     })
   }
   handleSubmitItem(item){
-    // console.log(item);
     this.setState({listItems: this.state.listItems.concat(item)},
       ()=>{
         console.log(this.state);
@@ -43,8 +43,13 @@ class ListComponent extends React.Component {
   }
   getRandomValue(){
     if(this.state.listItems.length > 1){
-      let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
-      this.setState({randomValue})   
+      let spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
+      let loadingStyle = {width: '10rem', float: 'none', display:'inline-block'};
+      this.setState({randomValue : <span style={spinnerContainerStyles}><img src={LoadingGif} style={loadingStyle}/>...Spinning</span>});
+      setTimeout(()=>{
+        let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
+        this.setState({randomValue: <span style={spinnerContainerStyles}><h2>{randomValue}</h2><br/>... now stop whining. The Gods have spoken.</span>})  
+      }, 2500)
     }
     else if(this.state.listItems.length == 1){
       this.setState({randomValue: 'You only have one value. Please add more items...'})
@@ -52,7 +57,6 @@ class ListComponent extends React.Component {
     else this.setState({randomValue: 'There are no values. Add items to the list.'});
   }
   componentWillMount(){
-    // console.log('componentWillMount');
     this.getData();
   }
   componentDidMount(){

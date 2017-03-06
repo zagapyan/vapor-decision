@@ -10,9 +10,6 @@ class RandomItemSpinnerComponent extends React.Component {
   	console.log(this);
   }
   componentWillMount(){
-  	setTimeout(()=>{
-  		console.log(this.getRandomItem())}
-		, 3000);
   }
   getRandomItem(){
   	// return this.props.listItems[Math.floor(Math.random() * this.props.listItems.length)]['value'];
@@ -22,7 +19,7 @@ class RandomItemSpinnerComponent extends React.Component {
       <div className="randomitemspinner-component">
       	<div className="jumbotron">
           <div className="container">
-            <h2 className="text-center">{this.props.randomValue}</h2>
+            {this.props.randomValue}
           </div>
         </div>
       </div>
