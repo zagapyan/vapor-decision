@@ -46,7 +46,7 @@ class ListComponent extends React.Component {
       this.setState({randomValue : <span style={spinnerContainerStyles}><progress class="progress" max="100"></progress><br />...Spinning</span>});
       setTimeout(()=>{
         let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
-        this.setState({randomValue: <span style={spinnerContainerStyles}><h2>{randomValue}</h2><br/>... now stop whining. The Gods have spoken.</span>})  
+        this.setState({randomValue: <span style={spinnerContainerStyles}><h3>{randomValue}</h3><p>...now stop whining. The Gods have spoken.</p></span>})  
       }, 2500)
     }
     else if(this.state.listItems.length == 1){
