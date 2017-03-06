@@ -10,7 +10,7 @@ import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
 import {base} from '../config/constants';
 require('styles//List.scss');
 let LoadingGif = require('../images/loading.gif');
-console.log(LoadingGif);
+const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
 
 class ListComponent extends React.Component {
   constructor(props){
@@ -43,9 +43,9 @@ class ListComponent extends React.Component {
   }
   getRandomValue(){
     if(this.state.listItems.length > 1){
-      let spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
+      
       let loadingStyle = {width: '10rem', float: 'none', display:'inline-block'};
-      this.setState({randomValue : <span style={spinnerContainerStyles}><img src={LoadingGif} style={loadingStyle}/>...Spinning</span>});
+      this.setState({randomValue : <span style={spinnerContainerStyles}><progress class="progress" max="100"></progress><br />...Spinning</span>});
       setTimeout(()=>{
         let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
         this.setState({randomValue: <span style={spinnerContainerStyles}><h2>{randomValue}</h2><br/>... now stop whining. The Gods have spoken.</span>})  
@@ -87,7 +87,7 @@ ListComponent.displayName = 'ListComponent';
 // Uncomment properties you need
 // ListComponent.propTypes = {};
 ListComponent.defaultProps = {
-  randomValue: 'Start Spinning!', 
+  randomValue: <span style={spinnerContainerStyles}><h3>Start Spinning!</h3></span>, 
   listItems: [{}]
 };
 
