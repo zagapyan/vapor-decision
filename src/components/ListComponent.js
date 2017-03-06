@@ -9,7 +9,6 @@ import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
 
 import {base} from '../config/constants';
 require('styles//List.scss');
-let LoadingGif = require('../images/loading.gif');
 const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
 
 class ListComponent extends React.Component {
@@ -43,7 +42,6 @@ class ListComponent extends React.Component {
   }
   getRandomValue(){
     if(this.state.listItems.length > 1){
-      
       let loadingStyle = {width: '10rem', float: 'none', display:'inline-block'};
       this.setState({randomValue : <span style={spinnerContainerStyles}><progress class="progress" max="100"></progress><br />...Spinning</span>});
       setTimeout(()=>{
