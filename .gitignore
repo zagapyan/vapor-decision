@@ -31,3 +31,7 @@ bower_components/
 
 # IDE/Editor data
 .idea
+
+# Dist Folder
+No plans on pushing dist folder to production repo.
+

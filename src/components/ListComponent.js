@@ -6,8 +6,10 @@ import update from 'react-addons-update';
 import ListItemsComponent from './ListItemsComponent';
 import ListFormComponent from './ListFormComponent';
 import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
-
 import {base} from '../config/constants';
+
+const LoadingGif = require('../images/loading.gif');
+
 require('styles//List.scss');
 const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
 
@@ -43,16 +45,16 @@ class ListComponent extends React.Component {
   getRandomValue(){
     if(this.state.listItems.length > 1){
       let loadingStyle = {width: '10rem', float: 'none', display:'inline-block'};
-      this.setState({randomValue : <span style={spinnerContainerStyles}><progress class="progress" max="100"></progress><br />...Spinning</span>});
+      this.setState({randomValue : <div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>});
       setTimeout(()=>{
         let randomValue = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]['value'];
-        this.setState({randomValue: <span style={spinnerContainerStyles}><h3>{randomValue}</h3><p>...now stop whining. The Gods have spoken.</p></span>})  
+        this.setState({randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomValue}</h2></span>})  
       }, 2500)
     }
     else if(this.state.listItems.length == 1){
-      this.setState({randomValue: 'You only have one value. Please add more items...'})
+      this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
     }
-    else this.setState({randomValue: 'There are no values. Add items to the list.'});
+    else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
   }
   componentWillMount(){
     this.getData();

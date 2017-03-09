@@ -18,9 +18,9 @@ class ListItemsComponent extends React.Component {
     			<ul className="list-unstyled">
             {this.props.listItems.map((item, key)=>{
               return(
-                <li key={key} className="form-control">{item.value}
-                  <span className="pull-right">
-                    <button onClick={this.onDelete.bind(this, key)}>&times;</button></span>
+                <li key={key} className="form-control">
+                  {item.value}
+                  <button onClick={this.onDelete.bind(this, key)}>&times;</button>
                 </li>
               );
             })}</ul>

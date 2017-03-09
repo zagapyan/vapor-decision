@@ -11,9 +11,6 @@ class RandomItemSpinnerComponent extends React.Component {
   }
   componentWillMount(){
   }
-  getRandomItem(){
-  	// return this.props.listItems[Math.floor(Math.random() * this.props.listItems.length)]['value'];
-  }
   render() {
     return (
       <div className="randomitemspinner-component">

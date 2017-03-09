@@ -1,7 +1,37 @@
+.floating{
+  -webkit-animation-name: Floatingx;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  
+  -moz-animation-name: Floating;
+  -moz-animation-duration: 4s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes Floatingx{
+  from {-webkit-transform:translate(0, -2px);}
+  50% {-webkit-transform:translate(0, 2px);}
+  to {-webkit-transform: translate(0, -2px);    }
+}
+    
+@-moz-keyframes Floating{
+  from {-moz-transform:translate(0, -2px);}
+  50% {-moz-transform:translate(0, 2px);}
+  to {-moz-transform: translate(0, -2px);}    
+}
 .content-component{
+	padding-bottom: 4rem;
+	.vapor-decision-logo{
+		display: table;
+		float: none;
+		margin: 6rem auto 6rem;
+		max-width: 22rem;
+	}
 	.login-button{
 		display: table;
 		float: none;
-		margin: 0 auto;
+		margin: 2rem auto 0;
 	}
 }

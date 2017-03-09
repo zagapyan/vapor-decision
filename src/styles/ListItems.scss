@@ -2,7 +2,11 @@
 	.list-unstyled{
 		.form-control{
 			margin-bottom: 1rem;
-
+			position: relative;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			background: rgba(255,255,255,.05);
+			color: #ffffff;
 			button{
 				border-radius: .2rem;
 				border: none;
@@ -10,9 +14,9 @@
 				height: 2.5rem;
 				line-height: 0.5;
 				padding: 0;
-				position: relative;
-				top: -0.2rem;
-				right: -0.8rem;
+				position: absolute;
+				top: 0.4rem;
+				right: 0.4rem;
 				color: #fff;
 		    background-color: #d9534f;
 		    border-color: #d43f3a;

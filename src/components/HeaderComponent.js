@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 // import { logout } from '../helpers/auth'
 import '../styles//Header.scss';
 
@@ -25,7 +25,7 @@ class HeaderComponent extends React.Component {
         	<div className="col-xs-2">
         	</div>
         	<div className="col-xs-8">
-        		<h1 className="text-center">Vapor Decision</h1></div>
+        		<h1 className="site-header text-center"><Link to="/">Vapor Decision</Link></h1></div>
         	<div className="col-xs-2"><div className="row">{loginTrigger}</div></div>
       	</div>
       </div>

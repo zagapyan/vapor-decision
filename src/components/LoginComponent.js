@@ -9,7 +9,8 @@ class LoginComponent extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      message: 'Please enter your email and password'
+      message: 'Please enter your email and password',
+      alertClass: this.props.alertClass
     }
   }
   componentWillMount(){
@@ -25,15 +26,17 @@ class LoginComponent extends React.Component{
     login(email, password).then((data)=>{
       if(data.isAnonymous===false){
         this.setState({
-          message: 'You have been authenticated!'
+          message: 'You have been authenticated!',
+          alertClass: 'alert alert-success'
         }, ()=>{
-          hashHistory.push('/list');
+          setTimeout(()=>hashHistory.push('/list'), 1000);
         })
       }
     }).catch((err)=>{
       console.log(err);
       this.setState({
-        message: err.message
+        message: err.message,
+        alertClass: 'alert alert-warning'
       }, ()=>{
         return 0;
       })
@@ -51,7 +54,7 @@ class LoginComponent extends React.Component{
         <div className="container">
           <h1> Login </h1>
           <form onSubmit={this.onSubmit.bind(this)}>
-            <p>{this.state.message}</p>
+            <p className={this.state.alertClass}>{this.state.message}</p>
             <div className="form-group">
               <label>Email</label>
               <input type="email" className="form-control" placeholder="Email" ref="email"/>
@@ -73,6 +76,7 @@ class LoginComponent extends React.Component{
 }
 
 LoginComponent.defaultProps = {
+  alertClass: ''
 }
 
 LoginComponent.displayName = 'LoginComponent';
