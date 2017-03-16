@@ -10,3 +10,4 @@ export const base = Rebase.createClass({
 
 export const ref = base.database().ref();
 export const firebaseAuth = base.auth;
+export const GoogleAuthProvider = base.auth.GoogleAuthProvider;

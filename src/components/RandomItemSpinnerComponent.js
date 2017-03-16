@@ -16,7 +16,7 @@ class RandomItemSpinnerComponent extends React.Component {
       <div className="randomitemspinner-component">
       	<div className="jumbotron">
           <div className="container">
-            <div class="col-xs-12">{this.props.randomValue}</div>
+            <div className="col-xs-12">{this.props.randomValue}</div>
           </div>
         </div>
       </div>

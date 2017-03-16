@@ -13,6 +13,7 @@ class ContentComponent extends React.Component {
           <p className="subhead text-center">So a machine can make bad choices for you...</p>
           <p className="text-center">...redundant titles are also bad choices.</p>
         	<Link to="login" className="btn btn-default login-button">Login</Link>
+          <Link to="list" className="btn btn-default login-anon">Skip Login</Link>
       	</div>
       </div>
     );

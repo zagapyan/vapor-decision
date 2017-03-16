@@ -8,17 +8,23 @@ import '../styles//Header.scss';
 class HeaderComponent extends React.Component {
   constructor(props){
   	super(props);
+    this.state={
+      alertClass: this.props.authed ? '' : 'text-center',
+      message: this.props.authed ? '' : 'You are currently not logged in.',
+      loginStyle: this.props.location.pathname == '/login' ? {display: 'none'} : {}
+    }
   }
   onLogout(e){
     e.preventDefault();
     this.props.handleLogout();
   }
   componentWillMount(){
+
   }
   componentDidMount(){
   }
   render() {
-  	const loginTrigger = this.props.authed ? <button onClick={this.onLogout.bind(this)} className="btn btn-danger logout-button">Log Out</button> : '';
+  	const loginTrigger = this.props.authed ? <button onClick={this.onLogout.bind(this)} className="btn btn-danger logout-button">Log Out</button> : <Link to="login" className="btn btn-danger logout-button" style={this.state.loginStyle}>Login</Link>;
     return (
       <div className="header-component">
         <div className="container">
@@ -28,6 +34,7 @@ class HeaderComponent extends React.Component {
         		<h1 className="site-header text-center"><Link to="/">Vapor Decision</Link></h1></div>
         	<div className="col-xs-2"><div className="row">{loginTrigger}</div></div>
       	</div>
+        <p className={this.state.alertClass}>{this.state.message}</p>
       </div>
     );
   }

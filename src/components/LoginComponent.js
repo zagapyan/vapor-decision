@@ -48,6 +48,9 @@ class LoginComponent extends React.Component{
     const password = this.refs.password.value;
     this.handleLoginSubmit(email, password);
   }
+  onGoogleLoginSubmit(){
+    this.props.handleGoogleLogin();
+  }
   render(){
     return (
       <div className="login-component">
@@ -69,6 +72,7 @@ class LoginComponent extends React.Component{
               </div>
             </div>
           </form>
+          <button type="submit" className="btn btn-primary login-google" onClick={this.onGoogleLoginSubmit.bind(this)}>Log In with Google</button>
         </div>
       </div>
     )

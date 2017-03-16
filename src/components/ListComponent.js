@@ -57,7 +57,12 @@ class ListComponent extends React.Component {
     else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
   }
   componentWillMount(){
-    this.getData();
+    if(this.state.authed){
+      this.getData();
+    }
+    else{
+      this.setState({listItems:[]});
+    }
   }
   componentDidMount(){
     base.syncState('listItems', {
