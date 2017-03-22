@@ -20,7 +20,7 @@ class ListItemsComponent extends React.Component {
               return(
                 <li key={key} className="form-control">
                   {item.value}
-                  <button onClick={this.onDelete.bind(this, key)}>&times;</button>
+                  <button onClick={this.onDelete.bind(this, key)} disabled={this.props.freeze}>&times;</button>
                 </li>
               );
             })}</ul>
