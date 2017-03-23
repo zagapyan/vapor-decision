@@ -49,26 +49,11 @@ class ListComponent extends React.Component {
   }
   getRandomValue(){
     if(this.state.listItems.length > 1){
+      let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
+      let randomItemKey = randomItem.key;
       this.setState({
-        // randomValue: spinningComponent(),
-        freeze: true,
-        thinking: true,
-        display: 'spinner'
+        randomItemKey: randomItemKey,
       });
-      
-      setTimeout(()=>{
-        let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
-        let randomItemKey = randomItem.key;
-        let randomValue = randomItem.value;
-        
-        this.setState({
-          // randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomValue}</h2></span>,
-          freeze:false,
-          thinking: false,
-          randomItemKey: randomItemKey,
-          display: 'item'
-        });  
-      }, 2500);
     }
     else if(this.state.listItems.length == 1){
       this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
@@ -90,25 +75,29 @@ class ListComponent extends React.Component {
       state: 'listItems',
       asArray: true
     });
-    base.syncState('/status/freeze',{
-      context: this,
-      state: 'freeze',
-      asArray: false,
-    });
-    base.syncState('/status/thinking',{
-      context: this,
-      state: 'thinking',
-      asArray: false
-    });
     base.syncState('/status/randomItemKey',{
       context: this,
       state: 'randomItemKey',
       asArray: false
     });
-    base.syncState('/status/display',{
+    base.listenTo('/status/randomItemKey', {
       context: this,
-      state: 'display',
-      asArray: false
+      then: ()=>{
+        this.setState({
+            freeze: true,
+            randomValue: <div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>
+          }, ()=>{
+          setTimeout(()=>{
+              let randomItemKey = this.state.randomItemKey;
+              let randomItemKeyValue = this.state.listItems[randomItemKey]['value'];
+              this.setState({
+                freeze: false,
+                randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomItemKeyValue}</h2></span>,
+              });
+            }, 2000
+          );
+        })
+      }
     });
   }
   render() {
@@ -134,6 +123,7 @@ ListComponent.displayName = 'ListComponent';
 ListComponent.defaultProps = {
   randomValue: <span style={spinnerContainerStyles}><h3>Start Spinning!</h3></span>, 
   listItems: [{}],
+  freeze: false
 };
 
 export default ListComponent;
