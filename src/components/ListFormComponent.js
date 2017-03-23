@@ -6,6 +6,7 @@ require('styles//ListForm.scss');
 class ListFormComponent extends React.Component {
   constructor(props){
   	super(props);
+    console.log(this.props.freeze)
   }
   onSubmit(e){
     this.listItem = this.refs.listItem.value;
@@ -31,9 +32,9 @@ class ListFormComponent extends React.Component {
         <div className="col-xs-12">
           <form className="list-form" name="list-form" onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
-            	<input type="text" htmlFor="list-form" ref="listItem" className="form-control" placeholder="Add Your Items to the List"/>
-            	<button type="submit" htmlFor="list-form" className="btn btn-default">Add to List</button>
-              <button onClick={this.onSpin.bind(this)} className="btn btn-default pull-right go-button">Spin!</button>
+            	<input type="text" htmlFor="list-form" ref="listItem" className="form-control" placeholder="Add Your Items to the List" disabled={this.props.freeze}/>
+            	<button type="submit" htmlFor="list-form" className="btn btn-default" disabled={this.props.freeze}>Add to List</button>
+              <button onClick={this.onSpin.bind(this)} className="btn btn-default pull-right go-button" disabled={this.props.freeze}>Spin!</button>
             </div>
           </form>
         </div>

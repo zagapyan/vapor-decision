@@ -26,6 +26,10 @@
 				background-color: #c9302c;
 				border-color: #ac2925;
 			}
+			button[disabled]{
+				background: #666;
+				color: #AAA
+			}
 		}
 	}
 }
