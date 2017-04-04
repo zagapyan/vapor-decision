@@ -18,7 +18,6 @@ const spinningComponent = ()=>{
   return(<div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>);
 };
 
-console.log(spinningComponent);
 class ListComponent extends React.Component {
   constructor(props){
     super(props);

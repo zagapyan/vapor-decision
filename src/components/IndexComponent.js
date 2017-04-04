@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Router, hashHistory}from 'react-router';
+import {Router, browserHistory}from 'react-router';
 import ContentComponent from './ContentComponent';
 
 import '../styles/Index.scss';
@@ -13,7 +13,7 @@ class IndexComponent extends React.Component {
 	componentWillMount(){
 		// console.log(this.props);
 		if(this.props.authed==true){
-			hashHistory.push('/list');
+			browserHistory.push('/list');
 			console.log(Router);
 		}
 	}

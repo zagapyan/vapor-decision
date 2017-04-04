@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IndexRoute, Router, Route, hashHistory } from 'react-router'
+import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 import 'normalize.css/normalize.css';
 import '../styles/App.scss';
 
@@ -25,8 +25,8 @@ class App extends Component {
   render() {
     return (
       <div className="app-component">
-        {/*<Router history={hashHistory} routes={routes} {...this.state}/>*/}
-        <Router history={hashHistory}>
+        {/*<Router history={browserHistory} routes={routes} {...this.state}/>*/}
+        <Router history={browserHistory}>
           <Route path="/" component={MainComponent}>
             <IndexRoute component={IndexComponent}/>
             <Route path="list" component={ListComponent} />
