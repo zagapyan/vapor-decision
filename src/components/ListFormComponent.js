@@ -6,7 +6,7 @@ require('styles//ListForm.scss');
 class ListFormComponent extends React.Component {
   constructor(props){
   	super(props);
-    console.log(this.props.freeze)
+    console.log(`frozen: ${this.props.freeze}`)
   }
   onSubmit(e){
     this.listItem = this.refs.listItem.value;

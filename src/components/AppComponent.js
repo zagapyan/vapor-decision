@@ -11,10 +11,7 @@ import NoMatchComponent from './NoMatchComponent';
 
 class App extends Component {
   constructor(props){
-    super(props);
-    this.state = {
-      authed: false
-    };
+    super(props)
   }
   componentDidMount(){
   }
@@ -32,7 +29,7 @@ class App extends Component {
             <Route path="list" component={ListComponent} />
             <Route path="login" component={LoginComponent} />
           </Route>
-          <Route path="*" component={NoMatchComponent}/> 
+          <Route path="*" component={NoMatchComponent}/>
         </Router>
       </div>
     );

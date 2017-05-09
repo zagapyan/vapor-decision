@@ -7,7 +7,6 @@ require('styles//RandomItemSpinner.scss');
 class RandomItemSpinnerComponent extends React.Component {
   constructor(props){
   	super(props);
-  	console.log(this);
   }
   componentWillMount(){
   }

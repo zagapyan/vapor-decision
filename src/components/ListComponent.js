@@ -21,10 +21,11 @@ const spinningComponent = ()=>{
 class ListComponent extends React.Component {
   constructor(props){
     super(props);
+    console.log(this.props)
     this.state=this.props;
   }
   getData() {
-    base.fetch('/listItems', {
+    base.fetch(`${this.state.uid}/listItems`, {
       context: this,
       then: (data) => {
         this.setState({listItems: data})
@@ -60,6 +61,7 @@ class ListComponent extends React.Component {
     else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
   }
   componentWillMount(){
+    console.log(this.props)
     if(this.state.authed){
       console.log('authed and mounted')
       this.getData();
@@ -68,18 +70,21 @@ class ListComponent extends React.Component {
       this.setState({listItems:[]});
     }
   }
-  componentDidMount(){
-    base.syncState('listItems', {
+  componentDidMount(){}
+  syncToFirebase(nextProps){
+    this.setState({...nextProps})
+    let uid = nextProps.uid
+    base.syncState(`${uid}/listItems`, {
       context: this,
       state: 'listItems',
       asArray: true
-    });
-    base.syncState('/status/randomItemKey',{
+    })
+    base.syncState(`${uid}/status/randomItemKey`,{
       context: this,
       state: 'randomItemKey',
       asArray: false
     });
-    base.listenTo('/status/randomItemKey', {
+    base.listenTo(`${uid}/status/randomItemKey`, {
       context: this,
       then: ()=>{
         this.setState({
@@ -98,6 +103,9 @@ class ListComponent extends React.Component {
         })
       }
     });
+  }
+  componentWillReceiveProps(nextProps){
+    this.syncToFirebase(nextProps)
   }
   render() {
     return (
@@ -120,8 +128,8 @@ ListComponent.displayName = 'ListComponent';
 // Uncomment properties you need
 // ListComponent.propTypes = {};
 ListComponent.defaultProps = {
-  randomValue: <span style={spinnerContainerStyles}><h3>Start Spinning!</h3></span>, 
-  listItems: [{}],
+  randomValue: <span style={spinnerContainerStyles}><h3>Start Spinning!</h3></span>,
+  // listItems: [{}],
   freeze: false
 };
 

@@ -19,12 +19,14 @@ class MainComponent extends React.Component {
     };
   }
   componentDidMount(){
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {      
+    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('user is logged in');
+        let uid = user.uid
+        console.log('user is logged in')
         this.setState({
-          authed: true
-        })
+          authed: true,
+          uid
+        }, ()=>console.log('userid updated'))
       } else {
         console.log('user is not logged in');
         this.setState({
@@ -34,7 +36,7 @@ class MainComponent extends React.Component {
     })
   }
   handleLogout(){
-    this.setState({authed: false},
+    this.setState({authed: false, uid:''},
       ()=>{
         if(this.state.authed == false){
           browserHistory.push('/login');
@@ -46,30 +48,27 @@ class MainComponent extends React.Component {
     let provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/plus.login');
     firebaseAuth().signInWithPopup(provider).then(function(result) {
-      
+
       // This gives you a Google Access Token. You can use it to access the Google API.
       let token = result.credential.accessToken;
-      
+
       // The signed-in user info.
-      let user = result.user;
-      console.log(this);
-      this.setState({authed: true},()=>browserHistory.push('/list'));
+      let user = result.user
+      console.log(this)
+      this.setState({authed: true, randomItemKey: ''},()=>browserHistory.push('/list'))
 
     }.bind(this)).catch(function(error) {
-      
+
       // Handle Errors here.
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      
+      let errorCode = error.code
+      let errorMessage = error.message
+
       // The email of the user's account used.
-      let email = error.email;
-      
+      let email = error.email
+
       // The firebase.auth.AuthCredential type that was used.
-      let credential = error.credential;
+      let credential = error.credential
     }.bind(this));
-  }
-  saveUser(user){
-    console.log('happen to you');
   }
   componentWillMount(){
   }
@@ -80,7 +79,8 @@ class MainComponent extends React.Component {
     const childrenWithProps = React.Children.map(this.props.children,
      (child) => React.cloneElement(child, {
        authed: this.state.authed,
-       handleGoogleLogin: this.handleGoogleLogin.bind(this)
+       handleGoogleLogin: this.handleGoogleLogin.bind(this),
+       uid: this.state.uid
      })
     );
     return (
