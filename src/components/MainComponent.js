@@ -10,14 +10,23 @@ import { auth, logout, login, saveUser } from '../helpers/auth';
 import '../styles/Main.scss';
 
 class MainComponent extends React.Component {
+  
   constructor(props){
     super(props);
     this.state = {
       authed: false,
+      getData: this.getData.bind(this),
+      getRandomValue: this.getRandomValue.bind(this),
+      listItems: this.props.listItems,
       handleLogout: this.handleLogout.bind(this),
-      handleGoogleLogin: this.handleGoogleLogin.bind(this)
+      handleGoogleLogin: this.handleGoogleLogin.bind(this),
+      handleSubmitItem: this.handleSubmitItem.bind(this),
+      handleDeleteItem: this.handleDeleteItem.bind(this),
+      handleSpin: this.handleSpin.bind(this),
+      syncToFirebase: this.syncToFirebase.bind(this)
     };
   }
+  
   componentDidMount(){
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
@@ -35,6 +44,41 @@ class MainComponent extends React.Component {
       }
     })
   }
+  
+  componentWillMount(){
+  
+  }
+  
+  componentWillUnmount(){
+    this.removeListener()
+  }
+
+  // Handles getting List Data
+  getData() {
+    base.fetch(`${this.state.uid}/listItems`, {
+      context: this,
+      then: (data) => {
+        this.setState({listItems: data})
+      }
+    });
+  }
+  
+  // This calculates a random value from the list
+  getRandomValue(){
+    if(this.state.listItems.length > 1){
+      let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
+      let randomItemKey = randomItem.key;
+      this.setState({
+        randomItemKey: randomItemKey,
+      });
+    }
+    else if(this.state.listItems.length == 1){
+      this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
+    }
+    else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
+  }
+
+  // This handles logging out
   handleLogout(){
     this.setState({authed: false, uid:''},
       ()=>{
@@ -44,6 +88,8 @@ class MainComponent extends React.Component {
         }
       });
   }
+
+  // This handles the email login [not google auth]
   handleGoogleLogin(){
     let provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/plus.login');
@@ -70,17 +116,76 @@ class MainComponent extends React.Component {
       let credential = error.credential
     }.bind(this));
   }
-  componentWillMount(){
+
+  // This handles list submit items
+  handleSubmitItem(item){
+    this.setState({listItems: this.state.listItems.concat(item)},
+      ()=>{
+        console.log(this.state);
+      }
+    );
   }
-  componentWillUnmount(){
-    this.removeListener()
+  
+  // This handles list delete items
+  handleDeleteItem(key){
+    this.setState({
+      listItems: update(this.state.listItems, {$splice: [[key, 1]]})
+    })
   }
+  
+  // This handles list spin
+  handleSpin(){
+    this.getRandomValue();
+  }
+  
+  syncToFirebase(nextProps){
+    this.setState({...nextProps})
+    let uid = nextProps.uid
+    base.syncState(`${uid}/listItems`, {
+      context: this,
+      state: 'listItems',
+      asArray: true
+    })
+    base.syncState(`${uid}/status/randomItemKey`,{
+      context: this,
+      state: 'randomItemKey',
+      asArray: false
+    });
+    base.listenTo(`${uid}/status/randomItemKey`, {
+      context: this,
+      then: ()=>{
+        this.setState({
+            freeze: true,
+            randomValue: <div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>
+          }, ()=>{
+          setTimeout(()=>{
+              let randomItemKey = this.state.randomItemKey;
+              let randomItemKeyValue = this.state.listItems[randomItemKey]['value'];
+              this.setState({
+                freeze: false,
+                randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomItemKeyValue}</h2></span>,
+              });
+            }, 2000
+          );
+        })
+      }
+    });
+  }
+
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
      (child) => React.cloneElement(child, {
-       authed: this.state.authed,
-       handleGoogleLogin: this.handleGoogleLogin.bind(this),
-       uid: this.state.uid
+        authed: this.state.authed,
+        getData: this.getData.bind(this),
+        getRandomValue: this.getRandomValue.bind(this),
+        handleLogout: this.handleLogout.bind(this),
+        handleGoogleLogin: this.handleGoogleLogin.bind(this),
+        handleSubmitItem: this.handleSubmitItem.bind(this),
+        handleDeleteItem: this.handleDeleteItem.bind(this),
+        handleSpin: this.handleSpin.bind(this),
+        listItems: this.state.listItems,
+        syncToFirebase: this.syncToFirebase.bind(this),
+        uid: this.state.uid
      })
     );
     return (
@@ -97,6 +202,8 @@ MainComponent.displayName = 'MainComponent';
 
 // Uncomment properties you need
 // MainComponent.propTypes = {};
-// MainComponent.defaultProps = {};
+MainComponent.defaultProps = {
+  listItems: []
+};
 
 export default MainComponent;
