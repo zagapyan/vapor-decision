@@ -40,7 +40,12 @@ class ListComponent extends React.Component {
   componentDidMount(){
 
   }
-  
+  componentWillReceiveProps(nextProps){
+    if(nextProps.listItems){
+      console.log(nextProps.listItems)
+      this.setState({listItems: nextProps.listItems})
+    }
+  }
   render() {
     return (
       <div className="list-component">

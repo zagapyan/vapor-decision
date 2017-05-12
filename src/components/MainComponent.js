@@ -35,7 +35,11 @@ class MainComponent extends React.Component {
         this.setState({
           authed: true,
           uid
-        }, ()=>console.log('userid updated'))
+        }, ()=>{
+          this.getData()
+          console.log('userid updated')
+        })
+
       } else {
         console.log('user is not logged in');
         this.setState({
@@ -55,9 +59,11 @@ class MainComponent extends React.Component {
 
   // Handles getting List Data
   getData() {
+    console.log('getting data')
     base.fetch(`${this.state.uid}/listItems`, {
       context: this,
       then: (data) => {
+        console.log(data);
         this.setState({listItems: data})
       }
     });
@@ -93,6 +99,7 @@ class MainComponent extends React.Component {
   handleGoogleLogin(){
     let provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/plus.login');
+
     firebaseAuth().signInWithPopup(provider).then(function(result) {
 
       // This gives you a Google Access Token. You can use it to access the Google API.
