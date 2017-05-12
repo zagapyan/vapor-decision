@@ -15,6 +15,7 @@ class MainComponent extends React.Component {
     super(props);
     this.state = {
       authed: false,
+      checkIfUserExists: this.checkIfUserExists.bind(this),
       getData: this.getData.bind(this),
       getRandomValue: this.getRandomValue.bind(this),
       listItems: this.props.listItems,
@@ -25,8 +26,22 @@ class MainComponent extends React.Component {
       handleSpin: this.handleSpin.bind(this),
       syncToFirebase: this.syncToFirebase.bind(this)
     };
+    console.log(this);
   }
   
+  checkIfUserExists(uid){
+    base.fetch(`${uid}`,{context: this})
+      .then(data=>{
+        // if listItems does not exist [because user has not been created]
+        if(!'listItems' in data){
+          // create empty states in uid
+          this.setState({listItems: [], randomItemKey: false, status: '' }, ()=>browserHistory.push('/list'))
+        }
+        else this.getData()
+      })
+      .catch(err=>err)
+  }
+
   componentDidMount(){
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
@@ -62,11 +77,8 @@ class MainComponent extends React.Component {
     console.log('getting data')
     base.fetch(`${this.state.uid}/listItems`, {
       context: this,
-      then: (data) => {
-        console.log(data);
-        this.setState({listItems: data})
-      }
-    });
+    }).then((data)=>this.setState({listItems:data}))
+      .catch(err=>err)
   }
   
   // This calculates a random value from the list
@@ -107,9 +119,13 @@ class MainComponent extends React.Component {
 
       // The signed-in user info.
       let user = result.user
-      console.log(this)
-      this.setState({authed: true, randomItemKey: ''},()=>browserHistory.push('/list'))
+      let uid = user.uid
 
+      // this.setState({authed: true, randomItemKey: ''},()=>browserHistory.push('/list'))
+      this.setState({authed: true, randomItemKey: ''}, ()=>{
+        console.log('checking if user exists')
+        this.checkIfUserExists(uid)
+      })
     }.bind(this)).catch(function(error) {
 
       // Handle Errors here.

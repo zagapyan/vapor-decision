@@ -26,20 +26,9 @@ class ListComponent extends React.Component {
     this.state=this.props;
   }
   
-  componentWillMount(){
-    console.log(this.props)
-    if(this.state.authed){
-      console.log('authed and mounted')
-      // this.getData();
-    }
-    else{
-      // this.setState({listItems:[]});
-    }
-  }
+  componentWillMount(){}
+  componentDidMount(){}
   
-  componentDidMount(){
-
-  }
   componentWillReceiveProps(nextProps){
     if(nextProps.listItems){
       console.log(nextProps.listItems)
