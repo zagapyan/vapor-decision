@@ -10,6 +10,9 @@ import _ from 'lodash';
 
 import '../styles/Main.scss';
 
+const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
+const LoadingGif = require('../images/loading.gif');
+
 class MainComponent extends React.Component {
   
   constructor(props){
@@ -27,37 +30,27 @@ class MainComponent extends React.Component {
       handleSpin: this.handleSpin.bind(this),
       syncToFirebase: this.syncToFirebase.bind(this)
     };
-    console.log(this);
   }
   
   checkIfUserExists(uid){
-    // console.log(uid)
-    // console.log(this)
-    base.fetch(`${uid}`,{context: this})
+    console.log('this is the user id:',uid);
+
+    base.fetch(`${uid}`, {context:this})
       .then(data=>{
+        console.log(data)
         // if listItems does not exist [because user has not been created]
         if(_.isEmpty(data)){
           console.log('no data exists')
-          // create empty states in uid
-          base.push(`${uid}`, {
-            data: {
-              listItems: [],
+          this.syncToFirebase(uid,
+            this.setState({
+              listItems: [{value: 'Welcome! Add more to your list!'}],
               randomItemKey: '',
               status: false
-            },
-            then(){
-              console.log(this);
-              console.log('this is thenned')
-              this.setState({listItems: [], randomItemKey: false, status: '' },
-                ()=>browserHistory.push('/list'))
-            }
-          })
+            })
+          )
+          
         }
-        
-        // else {
-        //   console.log('data exists, getting data...')
-        //   this.getData()
-        // }
+        else browserHistory.push('/list')
       })
       .catch(err=>err)
   }
@@ -66,25 +59,20 @@ class MainComponent extends React.Component {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
         let uid = user.uid
-        console.log('user is logged in')
         this.setState({
           authed: true,
           uid
-        }, ()=>{
-          this.getData()
-          console.log('userid updated')
-        })
-
-      } else {
-        console.log('user is not logged in');
-        this.setState({
-          authed: false
-        })
+        }, ()=>this.checkIfUserExists(uid))
       }
     })
   }
   
-  componentWillMount(){}
+  componentWillMount(){
+    // if uid exists, sync it to state
+    if(this.state.uid){
+      this.syncToFirebase(this.state.uid)
+    }
+  }
   componentWillUnmount(){
     this.removeListener()
   }
@@ -129,6 +117,7 @@ class MainComponent extends React.Component {
 
   // This handles the email login [not google auth]
   handleGoogleLogin(){
+    console.log('handleGoogleLogin')
     let provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/plus.login');
 
@@ -139,13 +128,8 @@ class MainComponent extends React.Component {
 
       // The signed-in user info.
       let user = result.user
+      console.log(user);
       let uid = user.uid
-
-      // this.setState({authed: true, randomItemKey: ''},()=>browserHistory.push('/list'))
-      this.setState({authed: true, randomItemKey: ''}, ()=>{
-        console.log('checking if user exists')
-        this.checkIfUserExists(uid)
-      })
     }.bind(this)).catch(function(error) {
 
       // Handle Errors here.
@@ -183,7 +167,7 @@ class MainComponent extends React.Component {
     this.getRandomValue();
   }
   
-  syncToFirebase(nextProps){
+  syncToFirebase(nextProps, callback){
     this.setState({...nextProps})
     let uid = nextProps.uid
     base.syncState(`${uid}/listItems`, {
@@ -204,8 +188,8 @@ class MainComponent extends React.Component {
             randomValue: <div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>
           }, ()=>{
           setTimeout(()=>{
-              let randomItemKey = this.state.randomItemKey;
-              let randomItemKeyValue = this.state.listItems[randomItemKey]['value'];
+              let randomItemKey = this.state.randomItemKey ? this.state.randomItemKey : '';
+              let randomItemKeyValue = this.state.listItems[randomItemKey] ? this.state.listItems[randomItemKey]['value'] : '';
               this.setState({
                 freeze: false,
                 randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomItemKeyValue}</h2></span>,
@@ -215,6 +199,7 @@ class MainComponent extends React.Component {
         })
       }
     });
+    if(callback) callback();
   }
 
   render() {
