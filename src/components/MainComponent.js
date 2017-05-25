@@ -6,6 +6,7 @@ import HeaderComponent from './HeaderComponent';
 import { browserHistory } from 'react-router';
 import { base, ref, firebaseAuth, GoogleAuthProvider} from '../config/constants';
 import { auth, logout, login, saveUser } from '../helpers/auth';
+import _ from 'lodash';
 
 import '../styles/Main.scss';
 
@@ -30,14 +31,33 @@ class MainComponent extends React.Component {
   }
   
   checkIfUserExists(uid){
+    // console.log(uid)
+    // console.log(this)
     base.fetch(`${uid}`,{context: this})
       .then(data=>{
         // if listItems does not exist [because user has not been created]
-        if(!'listItems' in data){
+        if(_.isEmpty(data)){
+          console.log('no data exists')
           // create empty states in uid
-          this.setState({listItems: [], randomItemKey: false, status: '' }, ()=>browserHistory.push('/list'))
+          base.push(`${uid}`, {
+            data: {
+              listItems: [],
+              randomItemKey: '',
+              status: false
+            },
+            then(){
+              console.log(this);
+              console.log('this is thenned')
+              this.setState({listItems: [], randomItemKey: false, status: '' },
+                ()=>browserHistory.push('/list'))
+            }
+          })
         }
-        else this.getData()
+        
+        // else {
+        //   console.log('data exists, getting data...')
+        //   this.getData()
+        // }
       })
       .catch(err=>err)
   }
@@ -64,10 +84,7 @@ class MainComponent extends React.Component {
     })
   }
   
-  componentWillMount(){
-  
-  }
-  
+  componentWillMount(){}
   componentWillUnmount(){
     this.removeListener()
   }
@@ -77,7 +94,10 @@ class MainComponent extends React.Component {
     console.log('getting data')
     base.fetch(`${this.state.uid}/listItems`, {
       context: this,
-    }).then((data)=>this.setState({listItems:data}))
+    }).then((data)=>{
+      let listItems = _.isEmpty(data) ? [] : data;
+      this.setState({listItems})
+    })
       .catch(err=>err)
   }
   
@@ -142,7 +162,9 @@ class MainComponent extends React.Component {
 
   // This handles list submit items
   handleSubmitItem(item){
-    this.setState({listItems: this.state.listItems.concat(item)},
+    let itemValue = _.isEmpty(item.value) ? [] : item.value; 
+    console.log(`itemValue ${itemValue} this.state.listItems ${this.state.listItems}`);
+    this.setState({listItems: this.state.listItems.concat({value: itemValue})},
       ()=>{
         console.log(this.state);
       }
