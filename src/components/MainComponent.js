@@ -66,10 +66,6 @@ class MainComponent extends React.Component {
         }, ()=>this.checkIfUserExists(uid))
       }
     })
-  }
-  
-  componentWillMount(){
-    // if uid exists, sync it to state
     if(this.state.uid){
       this.syncToFirebase({uid: this.state.uid})
     }
