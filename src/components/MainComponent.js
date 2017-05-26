@@ -42,7 +42,7 @@ class MainComponent extends React.Component {
         // if listItems does not exist [because user has not been created]
         if(_.isEmpty(data)){
           console.log('no data exists')
-          this.syncToFirebase(uid,
+          this.syncToFirebase({uid},
             this.setState({
               listItems: [{value: 'Welcome! Add more to your list!'}],
               randomItemKey: '',
@@ -71,7 +71,7 @@ class MainComponent extends React.Component {
   componentWillMount(){
     // if uid exists, sync it to state
     if(this.state.uid){
-      this.syncToFirebase(this.state.uid)
+      this.syncToFirebase({uid: this.state.uid})
     }
   }
   componentWillUnmount(){
@@ -168,9 +168,10 @@ class MainComponent extends React.Component {
     this.getRandomValue();
   }
   
-  syncToFirebase(nextProps, callback){
-    this.setState({...nextProps})
-    let uid = nextProps.uid
+  syncToFirebase(properties, callback){
+    console.log(properties)
+    this.setState({...properties})
+    let uid = properties.uid
     base.syncState(`${uid}/listItems`, {
       context: this,
       state: 'listItems',
