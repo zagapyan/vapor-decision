@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import { base, ref, firebaseAuth, GoogleAuthProvider} from '../config/constants';
 import { auth, logout, login, saveUser } from '../helpers/auth';
 import _ from 'lodash';
+import update from 'react-addons-update';
 
 import '../styles/Main.scss';
 
