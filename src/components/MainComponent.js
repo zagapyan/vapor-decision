@@ -31,14 +31,30 @@ class MainComponent extends React.Component {
       handleSpin: this.handleSpin.bind(this),
       syncToFirebase: this.syncToFirebase.bind(this)
     };
+    console.log('componentWillMount')
+    console.log(this.state)
   }
 
   checkIfUserExists(options){
     return base.fetch(`${options.uid}`,{context:this})
   }
+  checkIfLoggedIn(){
+    firebaseAuth().onAuthStateChanged((user)=>{
+      if (user) {
+        // User is signed in.
+        console.log('user: ', user)
+        this.setState({authed: true, uid: user.uid})
+      } else {
+        // No user is signed in.
+        console.log('no user')
+      }
+    })
+  }
   componentDidMount(){
-    console.log('componentWillMount');
-    this.syncToFirebase({...this.state})
+    console.log('componentDidMount')
+    this.checkIfLoggedIn()
+    this.handleAuthentication({...this.state})
+    // this.syncToFirebase({...this.state})
   }
   componentWillUnmount(){
     this.removeListener()
@@ -103,6 +119,7 @@ class MainComponent extends React.Component {
       this.handleAuthentication({uid})
       // this pushes the state to list
       browserHistory.push('/list')
+
     }.bind(this)).catch(function(error) {
 
       // Handle Errors here.
@@ -143,6 +160,7 @@ class MainComponent extends React.Component {
   syncToFirebase(properties, callback){
     console.log(properties.uid);
     base.syncState(`${properties.uid}/listItems`, {context:this, state: 'listItems', asArray: true})
+    base.syncState(`${properties.uid}/randomItemKey`, {context:this, state: 'randomItemKey'})
   }
 
   render() {
