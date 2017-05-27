@@ -13,7 +13,7 @@ class ListFormComponent extends React.Component {
     e.preventDefault();
     // console.log(this);
     if(this.listItem.length > 0){
-      console.log(this.listItem);
+      // console.log(this.listItem);
       this.setState({
         listItem: { value: this.listItem }
       },()=>{

@@ -19,7 +19,7 @@ class LoginComponent extends React.Component{
     }
   }
   componentWillUnmount(){
-    this.removeListener();
+    // this.removeListener();
   }
   handleLoginSubmit( email, password){
     event.preventDefault();

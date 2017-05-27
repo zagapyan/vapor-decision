@@ -23,7 +23,8 @@ class ListItemsComponent extends React.Component {
                   <button onClick={this.onDelete.bind(this, key)} disabled={this.props.freeze}>&times;</button>
                 </li>
               );
-            })}</ul>
+            })}
+            </ul>
     		</div>
       </div>
     );
