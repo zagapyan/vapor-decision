@@ -20,8 +20,8 @@ class MainComponent extends React.Component {
     super(props);
     this.state = {
       authed: false,
+      handleAuthentication: this.handleAuthentication.bind(this),
       checkIfUserExists: this.checkIfUserExists.bind(this),
-      getData: this.getData.bind(this),
       getRandomValue: this.getRandomValue.bind(this),
       listItems: this.props.listItems,
       handleLogout: this.handleLogout.bind(this),
@@ -32,58 +32,16 @@ class MainComponent extends React.Component {
       syncToFirebase: this.syncToFirebase.bind(this)
     };
   }
-  
-  checkIfUserExists(uid){
-    console.log('this is the user id:',uid);
 
-    base.fetch(`${uid}`, {context:this})
-      .then(data=>{
-        console.log(data)
-        // if listItems does not exist [because user has not been created]
-        if(_.isEmpty(data)){
-          console.log('no data exists')
-          this.syncToFirebase({uid},
-            this.setState({
-              listItems: [{value: 'Welcome! Add more to your list!'}],
-              randomItemKey: '',
-              status: false
-            })
-          )
-          
-        }
-        else browserHistory.push('/list')
-      })
-      .catch(err=>err)
+  checkIfUserExists(options){
+    return base.fetch(`${options.uid}`,{context:this})
   }
-
   componentDidMount(){
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (user) {
-        let uid = user.uid
-        this.setState({
-          authed: true,
-          uid
-        }, ()=>this.checkIfUserExists(uid))
-      }
-    })
-    if(this.state.uid){
-      this.syncToFirebase({uid: this.state.uid})
-    }
+    console.log('componentWillMount');
+    this.syncToFirebase({...this.state})
   }
   componentWillUnmount(){
     this.removeListener()
-  }
-
-  // Handles getting List Data
-  getData() {
-    console.log('getting data')
-    base.fetch(`${this.state.uid}/listItems`, {
-      context: this,
-    }).then((data)=>{
-      let listItems = _.isEmpty(data) ? [] : data;
-      this.setState({listItems})
-    })
-      .catch(err=>err)
   }
   
   // This calculates a random value from the list
@@ -101,6 +59,20 @@ class MainComponent extends React.Component {
     else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
   }
 
+  handleAuthentication(options){
+    let uid = options.uid
+    this.checkIfUserExists({options})
+      .then(data=>{
+        if (_.isEmpty(data)){
+          this.setState({uid, listItems: [{key: 0, value: 'Hello Friend! Add more to vaporize your decisions', authed: true}]},
+              ()=>{
+                console.log(this.state)
+                this.syncToFirebase({...this.state})
+              }
+            )
+        }
+      })
+  }
   // This handles logging out
   handleLogout(){
     this.setState({authed: false, uid:''},
@@ -125,8 +97,12 @@ class MainComponent extends React.Component {
 
       // The signed-in user info.
       let user = result.user
-      console.log(user);
       let uid = user.uid
+
+
+      this.handleAuthentication({uid})
+      // this pushes the state to list
+      browserHistory.push('/list')
     }.bind(this)).catch(function(error) {
 
       // Handle Errors here.
@@ -165,46 +141,14 @@ class MainComponent extends React.Component {
   }
   
   syncToFirebase(properties, callback){
-    console.log(properties)
-    this.setState({...properties})
-    let uid = properties.uid
-    base.syncState(`${uid}/listItems`, {
-      context: this,
-      state: 'listItems',
-      asArray: true
-    })
-    base.syncState(`${uid}/status/randomItemKey`,{
-      context: this,
-      state: 'randomItemKey',
-      asArray: false
-    });
-    base.listenTo(`${uid}/status/randomItemKey`, {
-      context: this,
-      then: ()=>{
-        this.setState({
-            freeze: true,
-            randomValue: <div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>
-          }, ()=>{
-          setTimeout(()=>{
-              let randomItemKey = this.state.randomItemKey ? this.state.randomItemKey : '';
-              let randomItemKeyValue = this.state.listItems[randomItemKey] ? this.state.listItems[randomItemKey]['value'] : '';
-              this.setState({
-                freeze: false,
-                randomValue: <span style={spinnerContainerStyles}><h2 className="spin-result">{randomItemKeyValue}</h2></span>,
-              });
-            }, 2000
-          );
-        })
-      }
-    });
-    if(callback) callback();
+    console.log(properties.uid);
+    base.syncState(`${properties.uid}/listItems`, {context:this, state: 'listItems', asArray: true})
   }
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
      (child) => React.cloneElement(child, {
         authed: this.state.authed,
-        getData: this.getData.bind(this),
         getRandomValue: this.getRandomValue.bind(this),
         handleLogout: this.handleLogout.bind(this),
         handleGoogleLogin: this.handleGoogleLogin.bind(this),
