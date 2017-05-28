@@ -37,7 +37,9 @@ class MainComponent extends React.Component {
 
   checkIfUserExists(options){
     console.log('checkIfUserExists: ', options)
-    return base.fetch(`${options.uid}`,{context:this})
+    if(options.uid){
+      return base.fetch(`${options.uid}`,{context:this})
+    }
   }
   checkIfLoggedIn(){
     console.log('checkIfLoggedIn')
