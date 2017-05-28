@@ -36,25 +36,29 @@ class MainComponent extends React.Component {
   }
 
   checkIfUserExists(options){
+    console.log('checkIfUserExists: ', options)
     return base.fetch(`${options.uid}`,{context:this})
   }
   checkIfLoggedIn(){
+    console.log('checkIfLoggedIn')
     firebaseAuth().onAuthStateChanged((user)=>{
       if (user) {
         // User is signed in.
         console.log('user: ', user)
-        this.setState({authed: true, uid: user.uid})
+        this.setState({authed: true, uid: user.uid}, ()=>{
+          this.handleAuthentication({...this.state})
+        })
+        
       } else {
         // No user is signed in.
-        console.log('no user')
+        browserHistory.push('/login')
+        return 0
       }
     })
   }
   componentDidMount(){
     console.log('componentDidMount')
-    this.checkIfLoggedIn()
-    this.handleAuthentication({...this.state})
-    // this.syncToFirebase({...this.state})
+    this.checkIfLoggedIn(this.handleAuthentication)
   }
   componentWillUnmount(){
     this.removeListener()
@@ -62,30 +66,38 @@ class MainComponent extends React.Component {
   
   // This calculates a random value from the list
   getRandomValue(){
-    if(this.state.listItems.length > 1){
-      let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
-      let randomItemKey = randomItem.key;
-      this.setState({
-        randomItemKey: randomItemKey,
-      });
-    }
-    else if(this.state.listItems.length == 1){
-      this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
-    }
-    else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
+    // if(this.state.listItems.length > 1){
+    //   let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
+    //   let randomItemKey = randomItem.key;
+    //   this.setState({
+    //     randomItemKey: randomItemKey,
+    //   });
+    // }
+    // else if(this.state.listItems.length == 1){
+    //   this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
+    // }
+    // else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
   }
 
   handleAuthentication(options){
-    let uid = options.uid
-    this.checkIfUserExists({options})
+    console.log('handleAuthentication')
+    let uid = options.uid;
+    this.checkIfUserExists({...options})
       .then(data=>{
         if (_.isEmpty(data)){
+          console.log('user does not exist. creating new list')
           this.setState({uid, listItems: [{key: 0, value: 'Hello Friend! Add more to vaporize your decisions', authed: true}]},
               ()=>{
                 console.log(this.state)
                 this.syncToFirebase({...this.state})
               }
             )
+        }
+        else{
+          console.log('user exists!')
+          base.fetch(`${uid}`, {context: this}).then(data=>{
+            this.setState({...data}, this.syncToFirebase({...this.state}))
+          })
         }
       })
   }
@@ -115,7 +127,7 @@ class MainComponent extends React.Component {
       let user = result.user
       let uid = user.uid
 
-
+      console.log(uid)
       this.handleAuthentication({uid})
       // this pushes the state to list
       browserHistory.push('/list')
