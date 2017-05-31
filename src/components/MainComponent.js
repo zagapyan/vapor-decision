@@ -3,7 +3,7 @@
 import React from 'react'
 import FooterComponent from './FooterComponent'
 import HeaderComponent from './HeaderComponent'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 import { base, ref, firebaseAuth, GoogleAuthProvider} from '../config/constants'
 import { auth, logout, login, saveUser } from '../helpers/auth'
 import _ from 'lodash'
@@ -59,7 +59,7 @@ class MainComponent extends React.Component {
         
       } else {
         // No user is signed in.
-        browserHistory.push('/login')
+        hashHistory.push('/login')
         return 0
       }
     })
@@ -119,7 +119,7 @@ class MainComponent extends React.Component {
     this.setState({authed: false, uid:''},
       ()=>{
         if(this.state.authed == false){
-          browserHistory.push('/login')
+          hashHistory.push('/login')
           logout()
         }
       })
@@ -143,7 +143,7 @@ class MainComponent extends React.Component {
       console.log(uid)
       this.handleAuthentication({uid})
       // this pushes the state to list
-      browserHistory.push('/list')
+      hashHistory.push('/list')
 
     }.bind(this)).catch(function(error) {
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 // import { logout } from '../helpers/auth'
 import '../styles//Header.scss';
 

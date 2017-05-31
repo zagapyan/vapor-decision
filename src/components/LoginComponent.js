@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {auth, login, saveUser} from '../helpers/auth';
-import {browserHistory} from 'react-router';
+import {hashHistory} from 'react-router';
 import '../styles/Login.scss';
 
 class LoginComponent extends React.Component{
@@ -15,7 +15,7 @@ class LoginComponent extends React.Component{
   }
   componentWillMount(){
     if(this.props.authed==true){
-      browserHistory.push('/list');
+      hashHistory.push('/list');
     }
   }
   componentWillUnmount(){
@@ -29,7 +29,7 @@ class LoginComponent extends React.Component{
           message: 'You have been authenticated!',
           alertClass: 'alert alert-success'
         }, ()=>{
-          setTimeout(()=>browserHistory.push('/list'), 1000);
+          setTimeout(()=>hashHistory.push('/list'), 1000);
         })
       }
     }).catch((err)=>{
