@@ -1,18 +1,24 @@
-'use strict';
+'use strict'
 
-import React from 'react';
-import FooterComponent from './FooterComponent';
-import HeaderComponent from './HeaderComponent';
-import { browserHistory } from 'react-router';
-import { base, ref, firebaseAuth, GoogleAuthProvider} from '../config/constants';
-import { auth, logout, login, saveUser } from '../helpers/auth';
-import _ from 'lodash';
-import update from 'react-addons-update';
+import React from 'react'
+import FooterComponent from './FooterComponent'
+import HeaderComponent from './HeaderComponent'
+import { browserHistory } from 'react-router'
+import { base, ref, firebaseAuth, GoogleAuthProvider} from '../config/constants'
+import { auth, logout, login, saveUser } from '../helpers/auth'
+import _ from 'lodash'
+import update from 'react-addons-update'
 
-import '../styles/Main.scss';
+import '../styles/Main.scss'
 
-const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
-const LoadingGif = require('../images/loading.gif');
+const LoadingGif = require('../images/loading.gif')
+
+const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'}
+const loadingStyle = {width: '10rem', float: 'none', display:'inline-block'}
+const spinningComponent = ()=>{
+  return(<div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>)
+};
+
 
 class MainComponent extends React.Component {
   
@@ -68,17 +74,22 @@ class MainComponent extends React.Component {
   
   // This calculates a random value from the list
   getRandomValue(){
-    // if(this.state.listItems.length > 1){
-    //   let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)];
-    //   let randomItemKey = randomItem.key;
-    //   this.setState({
-    //     randomItemKey: randomItemKey,
-    //   });
-    // }
-    // else if(this.state.listItems.length == 1){
-    //   this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
-    // }
-    // else this.setState({randomValue: <p>There are no values. Add items to the list.</p>});
+    this.setState({randomValue: spinningComponent()}, ()=>{
+      if(this.state.listItems.length > 1){
+        let time = 1500
+        let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]
+        let randomItemKey = randomItem.key
+        let randomValue = this.state.listItems[randomItemKey]['value']
+        
+        setTimeout(()=>{
+          this.setState({randomValue: <p>{randomValue}</p>})
+        }, time)
+      }
+      else if(this.state.listItems.length == 1){
+        this.setState({randomValue: <p>You only have one value. Please add more items...</p>})
+      }
+      else this.setState({randomValue: <p>There are no values. Add items to the list.</p>})
+    })
   }
 
   handleAuthentication(options){
@@ -108,22 +119,22 @@ class MainComponent extends React.Component {
     this.setState({authed: false, uid:''},
       ()=>{
         if(this.state.authed == false){
-          browserHistory.push('/login');
-          logout();
+          browserHistory.push('/login')
+          logout()
         }
-      });
+      })
   }
 
   // This handles the email login [not google auth]
   handleGoogleLogin(){
     console.log('handleGoogleLogin')
-    let provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/plus.login');
+    let provider = new GoogleAuthProvider()
+    provider.addScope('https://www.googleapis.com/auth/plus.login')
 
     firebaseAuth().signInWithPopup(provider).then(function(result) {
 
       // This gives you a Google Access Token. You can use it to access the Google API.
-      let token = result.credential.accessToken;
+      let token = result.credential.accessToken
 
       // The signed-in user info.
       let user = result.user
@@ -145,18 +156,18 @@ class MainComponent extends React.Component {
 
       // The firebase.auth.AuthCredential type that was used.
       let credential = error.credential
-    }.bind(this));
+    }.bind(this))
   }
 
   // This handles list submit items
   handleSubmitItem(item){
-    let itemValue = _.isEmpty(item.value) ? [] : item.value; 
-    console.log(`itemValue ${itemValue} this.state.listItems ${this.state.listItems}`);
+    let itemValue = _.isEmpty(item.value) ? [] : item.value;
+    console.log(`itemValue ${itemValue} this.state.listItems ${this.state.listItems}`)
     this.setState({listItems: this.state.listItems.concat({value: itemValue})},
       ()=>{
-        console.log(this.state);
+        console.log(this.state)
       }
-    );
+    )
   }
   
   // This handles list delete items
@@ -168,7 +179,7 @@ class MainComponent extends React.Component {
   
   // This handles list spin
   handleSpin(){
-    this.getRandomValue();
+    this.getRandomValue()
   }
   
   syncToFirebase(properties, callback){
@@ -189,25 +200,27 @@ class MainComponent extends React.Component {
         handleSpin: this.handleSpin.bind(this),
         listItems: this.state.listItems,
         syncToFirebase: this.syncToFirebase.bind(this),
+        randomValue: this.state.randomValue,
         uid: this.state.uid
      })
-    );
+    )
+    
     return (
       <div className="main-component">
         <HeaderComponent {...this.state} location={this.props.location}/>
         {childrenWithProps}
         <FooterComponent />
       </div>
-    );
+    )
   }
 }
 
-MainComponent.displayName = 'MainComponent';
+MainComponent.displayName = 'MainComponent'
 
 // Uncomment properties you need
 // MainComponent.propTypes = {};
 MainComponent.defaultProps = {
   listItems: []
-};
+}
 
-export default MainComponent;
+export default MainComponent

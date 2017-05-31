@@ -1,21 +1,20 @@
-'use strict';
+'use strict'
 
-import React from 'react';
-import update from 'react-addons-update';
+import React from 'react'
+import update from 'react-addons-update'
 
-import ListItemsComponent from './ListItemsComponent';
-import ListFormComponent from './ListFormComponent';
-import RandomItemSpinnerComponent from './RandomItemSpinnerComponent';
-// import {base} from '../config/constants';
+import ListItemsComponent from './ListItemsComponent'
+import ListFormComponent from './ListFormComponent'
+import RandomItemSpinnerComponent from './RandomItemSpinnerComponent'
 
-const LoadingGif = require('../images/loading.gif');
+const LoadingGif = require('../images/loading.gif')
 
-require('styles//List.scss');
+require('styles//List.scss')
 
-const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'};
-const loadingStyle = {width: '10rem', float: 'none', display:'inline-block'};
+const spinnerContainerStyles={textAlign: 'center', width: '100%', float: 'left'}
+const loadingStyle = {width: '10rem', float: 'none', display:'inline-block'}
 const spinningComponent = ()=>{
-  return(<div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>);
+  return(<div style={spinnerContainerStyles}><img src={LoadingGif} className="loading-gif"/><br /><p className="flicker">...Spinning</p></div>)
 };
 
 class ListComponent extends React.Component {
@@ -31,8 +30,8 @@ class ListComponent extends React.Component {
   
   componentWillReceiveProps(nextProps){
     if(nextProps.listItems){
-      console.log(nextProps.listItems)
-      this.setState({listItems: nextProps.listItems})
+      console.log(nextProps)
+      this.setState({listItems: nextProps.listItems, randomValue: nextProps.randomValue})
     }
   }
   render() {
