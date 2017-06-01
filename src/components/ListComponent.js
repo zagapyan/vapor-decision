@@ -31,7 +31,7 @@ class ListComponent extends React.Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.listItems){
       console.log(nextProps)
-      this.setState({listItems: nextProps.listItems, randomValue: nextProps.randomValue})
+      this.setState({listItems: nextProps.listItems, randomValue: nextProps.randomValue, freeze: nextProps.freeze})
     }
   }
   render() {

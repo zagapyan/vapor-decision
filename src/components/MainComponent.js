@@ -74,7 +74,7 @@ class MainComponent extends React.Component {
   
   // This calculates a random value from the list
   getRandomValue(){
-    this.setState({randomValue: spinningComponent()}, ()=>{
+    this.setState({randomValue: spinningComponent(), freeze: true}, ()=>{
       if(this.state.listItems.length > 1){
         let time = 1500
         let randomItem = this.state.listItems[Math.floor(Math.random() * this.state.listItems.length)]
@@ -82,7 +82,7 @@ class MainComponent extends React.Component {
         let randomValue = this.state.listItems[randomItemKey]['value']
         
         setTimeout(()=>{
-          this.setState({randomValue: <p>{randomValue}</p>})
+          this.setState({randomValue: <p>{randomValue}</p>, freeze: false})
         }, time)
       }
       else if(this.state.listItems.length == 1){
@@ -193,6 +193,7 @@ class MainComponent extends React.Component {
      (child) => React.cloneElement(child, {
         authed: this.state.authed,
         getRandomValue: this.getRandomValue.bind(this),
+        freeze: this.state.freeze,
         handleLogout: this.handleLogout.bind(this),
         handleGoogleLogin: this.handleGoogleLogin.bind(this),
         handleSubmitItem: this.handleSubmitItem.bind(this),
