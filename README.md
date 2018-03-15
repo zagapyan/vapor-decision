@@ -1,12 +1,18 @@
 # Vapor Decision
-This is a React implementation of the angular app vapor-decision that was started a few months ago. 
+Can't make up your mind? Can't figure out what Movie to watch? Which Restaurant to visit? Load up your indecisions and let this application decide!
 
-To see the older version of this application built in angular please follow this [link](https://github.com/zagapyan/vapor-decision-beta 'vapor decision using angular')
+Example of using this app. Add to list, eg:
 
-Instead of working with Angular and Google Maps, this has been reworked in Angular.
-This instance uses:
+Restaurants to Visit
+* Kuma's Corner
+* The Girl and the Goat
+* Fat Rice
+* Au Cheval
+* Kimski
+Hit Spin and Let the App choose for you!
+
+This application is built with ReactJs and Firebase:
 * firebase
 * react
-* webpack
 
 To run, install the repo and run `npm start`
