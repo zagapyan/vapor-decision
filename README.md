@@ -15,6 +15,6 @@ This application is built with ReactJs and Firebase:
 * firebase
 * react
 
-View the app [here] (https://vapor-decision.zigmundsunoo.com/ 'Vapor Decision')
+View the app https://vapor-decision.zigmundsunoo.com/
 
 To run, install the repo and run `npm start`
