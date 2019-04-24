@@ -35,3 +35,6 @@ bower_components/
 # Dist Folder
 No plans on pushing dist folder to production repo.
 
+dist
+
+.DS_Store
